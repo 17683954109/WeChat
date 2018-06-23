@@ -1,0 +1,29 @@
+.back_bar{
+    height: 40px;
+    margin: 0;
+    padding: 0;
+}
+.bk_bar{
+    width: 10%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    float:left;
+}
+.back_bar p{
+    width: 80%;
+    height: 100%;
+    float:left;
+    line-height: 40px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+.bk_menu{
+    width: 7%;
+    height: 65%;
+    margin: 0;
+    padding: 0;
+    float:left;
+    margin-top: 7px;
+}
