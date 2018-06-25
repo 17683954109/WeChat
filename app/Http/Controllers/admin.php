@@ -7,6 +7,7 @@ use App\Entity\pre_img;
 use App\Entity\product;
 use App\Entity\clas;
 use App\Entity\User2;
+use App\Entity\Main;
 
 class admin extends Controller
 {
@@ -66,6 +67,9 @@ class admin extends Controller
 
 //    图片添加方法
     public function addimg(){
-        return view('admin.picture-add');
+        $classs=clas::all();
+        $main=Main::all();
+        $pro=product::all();
+        return view('admin.picture-add',['class'=>$classs,'main'=>$main,'all'=>$pro]);
     }
 }
