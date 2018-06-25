@@ -91,5 +91,6 @@ Route::get('/login',function (\Illuminate\Http\Request $request){
         Route::get('/admin/img_list','admin@img_list');
         Route::post('/admin/login/log','admin@login');
         Route::get('/admin/member-list','admin@memberlist');
-        Route::get('/admin/picture-show','admin@img_show');
+        Route::get('/admin/picture-show/{id}','admin@img_show');
+        Route::get('/admin/picture-add','admin@addimg');
 

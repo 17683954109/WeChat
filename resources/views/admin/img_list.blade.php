@@ -3,17 +3,17 @@
     <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 图片管理 <span class="c-gray en">&gt;</span> 图片列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
     <div class="page-container">
 
-        <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" onclick="picture_add('添加图片','picture-add.html')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加图片</a></span> <span class="r">共有数据：<strong>{{$num}}</strong> 条</span> </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" onclick="picture_add('添加图片','/admin/picture-add')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加图片</a></span> <span class="r">共有数据：<strong>{{$num}}</strong> 条</span> </div>
         <div class="mt-20">
             <table class="table table-border table-bordered table-bg table-hover table-sort">
                 <thead>
                 <tr class="text-c">
                     <th width="40"><input name="" type="checkbox" value=""></th>
                     <th width="80">ID</th>
-                    <th width="100">分类</th>
+                    <th width="100">主分类</th>
                     <th width="100">封面</th>
                     <th width="100">图片名称</th>
-                    <th width="150">主分类</th>
+                    <th width="150">子分类</th>
                     <th width="150">更新时间</th>
                     <th width="60">发布状态</th>
                     <th width="100">操作</th>
@@ -24,13 +24,13 @@
                 <tr class="text-c">
                     <td><input name="" type="checkbox" value=""></td>
                     <td>{{$v->id}}</td>
-                    <td>{{$name[$k]->class_name}}</td>
-                    <td><a href="javascript:;" onClick="picture_edit('图库编辑','/admin/picture-show','10001')"><img width="100" class="picture-thumb" src="{{$v->prview_img}}"></a></td>
-                    <td class="text-l"><a class="maincolor" href="javascript:;" onClick="picture_edit('图库编辑','/admin/picture-show','10001')">{{$v->info}}</a></td>
-                    <td class="text-c">{{$name[$k]->main_class}}</td>
+                    <td>{{$name[$k]->main_class}}</td>
+                    <td><a href="javascript:;" onClick="picture_edit('图库编辑','/admin/picture-show/{{$v->id}}','10001')"><img width="100" class="picture-thumb" src="{{$v->prview_img}}"></a></td>
+                    <td class="text-l"><a class="maincolor" href="javascript:;" onClick="picture_edit('图库编辑','/admin/picture-show/{{$v->id}}','10001')">{{$v->info}}</a></td>
+                    <td class="text-c">{{$name[$k]->class_name}}</td>
                     <td>{{$v->created_at}}</td>
                     <td class="td-status"><span class="label label-success radius">已发布</span></td>
-                    <td class="td-manage"><a style="text-decoration:none" class="ml-5" onClick="picture_edit('图库编辑','picture-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="picture_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                    <td class="td-manage"><a style="text-decoration:none" class="ml-5" onClick="picture_edit('图库编辑','/admin/picture-add','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="picture_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
                 </tr>
                     @endforeach
                 </tbody>

@@ -10,6 +10,7 @@ use App\Entity\User2;
 
 class admin extends Controller
 {
+//    后台登录方法
     public function login(Request $request){
         $res=$request->input('somefield');
         $username=$res['user'];
@@ -33,6 +34,8 @@ class admin extends Controller
         }
         
     }
+
+//    查看图片列表方法
     public function img_list(){
         $res=product::all();
         $classid=array();
@@ -46,12 +49,23 @@ class admin extends Controller
         $count=count($res);
         return view('admin.img_list',['name'=>$classname,'id'=>$res,'num'=>$count]);
     }
+
+//    查看用户列表方法
     public function memberlist(){
         $res=User2::all();
         $count=count($res);
         return view('admin.memberlist',['res'=>$res,'num'=>$count]);
     }
-    public function img_show(){
-        return view('admin.img_show');
-}
+
+//    同一商品下的图片查看
+    public function img_show($id){
+        $res=pre_img::where('detail_id',$id)->get();
+        $count=count($res);
+        return view('admin.img_show',['res'=>$res,'num'=>$count]);
+    }
+
+//    图片添加方法
+    public function addimg(){
+        return view('admin.picture-add');
+    }
 }
