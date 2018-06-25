@@ -140,7 +140,7 @@ class cart extends Controller
 
 
     // 生成订单方法，参数为商品id
-    public function order($product_ids){
+    public function order(Request $request,$product_ids){
         // 生成订单号
         $order_date = date('Y-m-d');
  
@@ -192,23 +192,28 @@ class cart extends Controller
            // 拼合数组，准备存入数据库
          $proinfo=implode(',',$order_arr);
          $price=implode(',',$price); 
-          //进行数据库写入操作 
-        $order=new order;
-        $order->order_id=$order_id;
-        $order->state='no pay';
-        $order->user=session('user');
-        $order->proinfo=$proinfo;
-        $order->save();
-        $order_shutcut=new order_shutcut;
-         $order_shutcut->order_id=$order_id;
-         $order_shutcut->price=$price;
-         $order_shutcut->save();
-         // 数据库订单生成完成，购物车进行同步
-         $cart_info=implode(',',$cart_info);
-        $cart_inf->proinfo=$cart_info;
-        $cart_inf->save();
+          //进行数据库写入操作
+        $ss=$request->input('addorder');
+        if ($ss!=null&&$ss!=''){
+            $order=new order;
+            $order->order_id=$order_id;
+            $order->state='no pay';
+            $order->user=session('user');
+            $order->proinfo=$proinfo;
+            $order->save();
+            $order_shutcut=new order_shutcut;
+            $order_shutcut->order_id=$order_id;
+            $order_shutcut->price=$price;
+            $order_shutcut->save();
+            // 数据库订单生成完成，购物车进行同步
+            $cart_info=implode(',',$cart_info);
+            $cart_inf->proinfo=$cart_info;
+            $cart_inf->save();
+            return view('order',['pro'=>$product,'num'=>$nums,'total'=>$totalprice,'isaddorder'=>'yes']);
+        }
+
           // 返回视图，方法结束
-        return view('order',['pro'=>$product,'num'=>$nums,'total'=>$totalprice]);
+        return view('order',['pro'=>$product,'num'=>$nums,'total'=>$totalprice,'isaddorder'=>'no','item_arr'=>$res_arr]);
     }
 
     // 获取用户订单列表方法
@@ -216,7 +221,7 @@ class cart extends Controller
         // 获取用户的session用户名
         $user=session('user');
         // 根据用户名提取订单
-        $orderlist=order::where('user',$user)->get();
+        $orderlist=order::where('user',$user)->orderBy('created_at','desc')->get();
         $orderlist=json_decode($orderlist);
         $orderid_arr=array();
         $state_arr=array();

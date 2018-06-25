@@ -285,6 +285,16 @@
                 item_arr=[];
                 item_arr.push(id);
             }
+            if (item_arr.length==0){
+                document.getElementById('resoult').innerHTML='请选择删除项!';
+                document.getElementById('toasts').style.display='block';
+                // alert('添加成功!');
+                setTimeout(function () {
+                    document.getElementById('toasts').style.display='none';
+                    document.getElementById('resoult').innerHTML='已发送!';
+                },1000)
+                return;
+            }
             $.ajax({
                 type:'GET',
                 url:'/cart/delcart',

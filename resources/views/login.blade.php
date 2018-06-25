@@ -138,18 +138,6 @@
                                 var telqrcode;
                                 function getqrcode() {
                                 telqrcode=telqrcodes.value;
-                                // if(telqrcode.length==6){
-                                //     document.getElementById('telcode').innerHTML='';
-                                // }
-                                // if (telqrcode.length<6){
-                                //     document.getElementById('telcode').innerHTML='验证码过短!';
-                                // }
-                                // if (telqrcode.length>6){
-                                //      document.getElementById('telcode').innerHTML='验证码过长!';
-                                // }
-                                // if (telqrcode.length==0){
-                                //     document.getElementById('telcode').innerHTML='';
-                                // }
                                 }
                                 </script>
 

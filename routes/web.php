@@ -15,9 +15,6 @@ Route::get('/', function (\Illuminate\Http\Request $request) {
     $return_url=$request->input('return_url','');
     return view('login')->with('return_url',urldecode($return_url));
 });
-Route::get('/admin',function (){
-   return admin::all();
-});
 Route::get('/register',function (){
     return view('register');
 });
@@ -76,6 +73,23 @@ Route::get('/login',function (\Illuminate\Http\Request $request){
         Route::get('/cart/order_list','cart@orderlist');
         Route::get('/order/{order_id}','cart@orderdetail');
         Route::get('/delorder/{order_id}','cart@delorder');
+        
     });
 
+    //后台路由组
+    Route::group(['middleware'=>'admins'],function(){
+        Route::get('/admin/index',function(){
+            return view('admin.index');
+        });
+        Route::get('/admin/welcome',function(){
+            return view('admin.welcome');
+        });
+    });
+        Route::get('/admin/login',function(){
+            return view('admin.login');
+        });
+        Route::get('/admin/img_list','admin@img_list');
+        Route::post('/admin/login/log','admin@login');
+        Route::get('/admin/member-list','admin@memberlist');
+        Route::get('/admin/picture-show','admin@img_show');
 

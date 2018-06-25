@@ -144,7 +144,7 @@
 {{--邮箱注册结束--}}
 
 <label for="weuiAgree" class="weui-agree">
-    <input id="weuiAgree" type="checkbox" class="weui-agree__checkbox" checked="checked">
+    <input id="agreexy" type="checkbox" class="weui-agree__checkbox" checked="checked" onclick="return false">
     <span class="weui-agree__text">
         阅读并同意<a href="javascript:void(0);">《相关条款》</a>
     </span>
@@ -340,6 +340,16 @@
     let i=60;
 
     //短信验证码获取
+    let smscodeinfo='';//用户获取验证码后改变该值
+    let userxieyi='';//用户协议，默认为空，不勾选则不能注册
+    function changexieyi() {
+        if (userxieyi=''){
+            userxieyi='false';
+        }else{
+            userxieyi='';
+        }
+
+    }
     function getsmscode() {
         if (telphone.length!=11){
             alert('表单填写有误！');
@@ -366,6 +376,7 @@
                     document.getElementById('toasts').style.display='none';
                 },1000);
                 console.log(data);
+                smscodeinfo='yes';
                 getcode();
             },
             error: function (data, textStatus, errorThrown) {
@@ -415,6 +426,10 @@
             //   验证表单是否合法
             if (telphone.length!=11||smscodes.length!=6||telpasswd.length<=9){
                 alert('表单填写有误！');
+                return;
+            }
+            if (smscodeinfo!='yes'){
+                alert('请先获取验证码！');
                 return;
             }
             let dates={

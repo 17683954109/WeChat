@@ -95,7 +95,7 @@ class userService extends Controller
             $email->to=$emailAd;
             $email->cc='17683954109@163.com';
             $email->subject='TheShy';
-            $email->content='你的注册激活链接：http://www.we.com/login/'.$emailAd.'/'.$code.' 请于五分钟内完成注册！';
+            $email->content="<div>你的注册激活链接：<a href='http://www.we.com/login/$emailAd/$code'>$code</a> 请于五分钟内完成注册！</div>";
 
             Mail::send('emails.code',['email'=>$email],function($m) use ($email){
                 $m->to($email->to,'你好:')
