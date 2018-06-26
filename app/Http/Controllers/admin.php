@@ -9,14 +9,22 @@ use App\Entity\clas;
 use App\Entity\User2;
 use App\Entity\Main;
 use App\Entity\detail;
+use App\temp_img;
 
 class admin extends Controller
 {
+//    缓存图片查看方法
+    public function tmpimg($id){
+        $res=temp_img::where('id',$id)->first();
+        $res=$res->path;
+        return response()->json($res,200);
+    }
 //    商品添加方法
     public function proadd(){
         $classs=clas::all();
         $main=Main::all();
-        return view('admin.proadd',['class'=>$classs,'main'=>$main]);
+        $id=product::select('id')->orderBy('id','desc')->limit(1)->get();
+        return view('admin.proadd',['class'=>$classs,'main'=>$main,'id'=>$id[0]->id+1]);
     }
 //    获取时间方法
     public function gettime(){
@@ -73,7 +81,7 @@ class admin extends Controller
         if ($res['online']=='yes') {
            return response()->json('ok',200)->withCookie('adminuser',"$username",3600);
         }else{
-            session(['adminuser'=>"$username"]);
+            session(['adminuser'=>$username]);
             return response()->json('ok',200);
         }
         
@@ -132,6 +140,15 @@ class admin extends Controller
             $index=strpos($filept,'/upload');
             $path=substr($filept,$index);
 //            return $path;
+            if ($id==null||$id==''){
+                $res=new temp_img;
+                $res->path=$path;
+                $res->save();
+                $ids=temp_img::select('id')->where('path',$path)->first();
+                $ids=$ids->id;
+                $_SESSION['imgid']=$ids;
+                return response()->json($ids,200);
+            }
             $res=new pre_img;
             $res->address=$path;
             $res->detail_id=$id;

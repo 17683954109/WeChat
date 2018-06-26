@@ -15,9 +15,11 @@ class admins
      */
     public function handle($request, Closure $next)
     {
-//        if (session('adminuser')==''){
-//            return redirect('/admin/login');
-//        }
+        if (session('adminuser')==null||session('adminuser')==''){
+            if ($request->cookie('adminuser')==''||$request->cookie('adminuser')==null){
+                return redirect('/admin/login');
+            }
+        }
 
         return $next($request);
     }

@@ -45,7 +45,7 @@
 			</tr>
 			<tr>
 				<td>当前SessionID </td>
-				<td><?=session('user')?></td>
+				<td><?=session('adminuser')?></td>
 			</tr>
 			<tr>
 				<td>当前系统用户名 </td>

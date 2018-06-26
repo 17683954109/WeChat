@@ -35,7 +35,8 @@
 				<input type="text" name="proname" class="input-text">
 				 </div>
         </div>
-        <div class="row cl">
+
+                <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">文字说明：</label>
             <div class="formControls col-xs-6 col-sm-6">
                 <textarea id="content" style="height: 300px" cols="" rows="" class="textarea"  placeholder="请对商品作简要说明......"></textarea>
@@ -68,46 +69,50 @@
                     <input type="file" name="jg" id="mFile" multiple="multiple">
                     <script>
                         //文件上传
+                        let id;
                         function ajaxFileUpload() {
 
-                            //图片格式验证
-                            var x = document.getElementById("mFile");
-                            if (!x || !x.value){return;}
-                            var patn = /\.jpg$|\.jpeg$|\.png$|\.gif$/i;
-                            if (!patn.test(x.value)) {
-                                alert("您选择的似乎不是图像文件。");
-                                x.value = "";
-                                return;
-                            }
-                            var elementIds = ["mFile"]; //flag为id、name属性名
-                            $.ajaxFileUpload({
-                                url: '/admin/imgadd',//上传的url，根据自己设置
-                                type: 'post',
-                                secureuri: false, //一般设置为false
-                                fileElementId: 'jg', // 上传文件的id、name属性名
-                                dataType: 'json', //返回值类型，一般设置为json、application/json
-                                elementIds: elementIds, //传递参数到服务器
-                                success: function (data, status) {
-                                    //alert(data);
-                                    if (data == "Error1") {
-                                        alert("文件太大，请上传不大于5M的文件！");
-                                        return;
-                                    } else if (data == "Error2") {
-                                        alert("上传失败，请重试！");
-                                        return;
-                                    } else {
-                                        //这里为上传并做一下请求显示处理，返回的data是对应上传的文件名
-                                        $("#imgup").append("<img width='300' height='300' src='"+ data+"'/>");
-
-                                    }
+                            var formData = new FormData();
+                            formData.append("jg", $("#mFile")[0].files[0]);
+                            formData.append("_token",'{{csrf_token()}}');
+                            $.ajax({
+                                url: '/admin/imgadd',
+                                type: 'POST',
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                success: function (msg) {
+                                    console.log(msg);
+                                    id=msg;
+                                    getimgs(msg);
                                 },
-                                error: function (data, status, e) {
-                                    alert(e);
+                                error:function (data,status,sts) {
+                                    console.log(data);
                                 }
                             });
-                            //return false;
                         }
-
+                        let nums=0;
+                        let id_arr=[];
+                        function getimgs(id) {
+                            $.ajax({
+                                url:'/admin/tmpimg/'+id,
+                                type:'GET',
+                                success:function (data) {
+                                    nums++;
+                                    let preimg=document.getElementById('imgshow');
+                                    id_arr.push(id);
+                                    preimg.innerHTML+="<li class=\"item\" id=\"\">\n" +
+                                        "                        <div class=\"portfoliobox\">\n" +
+                                        "                            <input class=\"checkbox\" name=\"imgid\" type=\"checkbox\" onclick=\"add()\">\n" +
+                                        "                            <div class=\"picbox\"><a data-lightbox=\"gallery\" id=\"imgshow\"><img src='"+data+"' id='"+nums+"'/></a></div>\n" +
+                                        "                        </div>\n" +
+                                        "                    </li>";
+                                },
+                                error:function (data,status,sts) {
+                                    console.log(data);
+                                }
+                            })
+                        }
                     </script>
                     <div id="filePicker"></div>
                     <button id="btn-star" class="btn btn-default btn-uploadstar radius ml-10" style="margin-left: 0;margin-top: 15px"onclick="ajaxFileUpload()">开始上传</button>
@@ -115,32 +120,52 @@
             </div>
         </div>
 
+
+        <div class="page-container">
+            <div class="cl pd-5 bg-1 bk-gray mt-20" style="margin-left: 15%">
+                <span class="l"><a onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span>
+                <span style="color: red;display: none" id="toasts"></span>
+            </div>
+            <div class="portfolio-content">
+                <ul class="cl portfolio-area" id="imgshow">
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-9 col-offset-2">
+                <input class="btn btn-primary radius" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" onclick="sendChange()" id="res">
+            </div>
+        </div>
+
+
     </div>
     <script>
-        // let fills;
-        // document.getElementById('mFile').onchange = function (ev) {
-        //     //判断 FileReader 是否被浏览器所支持
-        //     if (!window.FileReader) return;
-        //
-        //     console.log(ev);
-        //
-        //     var file = ev.target.files[0];
-        //     fills=file;
-        //
-        //     if(!file.type.match('image/*')){
-        //         alert('上传的图片必修是png,gif,jpg格式的！');
-        //         ev.target.value = ""; //显示文件的值赋值为空
-        //         return;
-        //     }
-        //
-        //     var reader = new FileReader();  // 创建FileReader对象
-        //
-        //     reader.readAsDataURL(file); // 读取file对象，读取完毕后会返回result 图片base64格式的结果
-        //
-        //     reader.onload = function(e){
-        //         document.getElementById('mImg').src = e.target.result;
-        //     }
-        //
-        // }
+        let fills;
+        document.getElementById('mFile').onchange = function (ev) {
+            //判断 FileReader 是否被浏览器所支持
+            if (!window.FileReader) return;
+
+            console.log(ev);
+
+            var file = ev.target.files[0];
+            fills=file;
+
+            if(!file.type.match('image/*')){
+                alert('上传的图片必修是png,gif,jpg格式的！');
+                ev.target.value = ""; //显示文件的值赋值为空
+                return;
+            }
+
+            var reader = new FileReader();  // 创建FileReader对象
+
+            reader.readAsDataURL(file); // 读取file对象，读取完毕后会返回result 图片base64格式的结果
+
+            reader.onload = function(e){
+                document.getElementById('mImg').src = e.target.result;
+            }
+
+        }
     </script>
 @endsection

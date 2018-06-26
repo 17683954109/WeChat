@@ -84,12 +84,6 @@ Route::get('/login',function (\Illuminate\Http\Request $request){
         Route::get('/admin/welcome',function(){
             return view('admin.welcome');
         });
-    });
-        Route::get('/admin/login',function(){
-            return view('admin.login');
-        });
-        Route::get('/admin/img_list','admin@img_list');
-        Route::post('/admin/login/log','admin@login');
         Route::get('/admin/member-list','admin@memberlist');
         Route::get('/admin/picture-show/{id}','admin@img_show');
         Route::get('/admin/picture-add','admin@addimg');
@@ -100,4 +94,13 @@ Route::get('/login',function (\Illuminate\Http\Request $request){
         Route::get('/admin/prodel/{id}','admin@prodel');
         Route::get('/admin/gettime','admin@gettime');
         Route::get('/admin/proadd','admin@proadd');
+        Route::get('/admin/img_list','admin@img_list');
+        Route::get('/admin/tmpimg/{id}','admin@tmpimg');
+    });
+        Route::get('/admin/login',function(){
+            return view('admin.login');
+        });
+
+        Route::post('/admin/login/log','admin@login');
+
 
