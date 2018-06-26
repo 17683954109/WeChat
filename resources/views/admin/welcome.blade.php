@@ -37,7 +37,7 @@
 			</tr>
 			<tr>
 				<td>服务器当前时间 </td>
-				<td><?=date('Y-m-d H:i:s',time())?></td>
+				<td id="times"><?=date('Y-m-d H:i:s',time())?></td>
 			</tr>
 			<tr>
 				<td>当前程序占用内存 </td>
@@ -59,5 +59,16 @@
 	</table>
 </div>
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
-<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+	<script>
+		let s=setInterval(function () {
+			$.ajax({
+				url:'/admin/gettime',
+				type:'GET',
+				success:function (data) {
+					document.getElementById('times').innerHTML=data;
+                }
+			})
+        },1000);
+	</script>
 @endsection

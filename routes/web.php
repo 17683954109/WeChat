@@ -98,4 +98,6 @@ Route::get('/login',function (\Illuminate\Http\Request $request){
         Route::get('/admin/productEdit/{id}','admin@proEdit');
         Route::post('/admin/prochange','admin@prochange');
         Route::get('/admin/prodel/{id}','admin@prodel');
+        Route::get('/admin/gettime','admin@gettime');
+        Route::get('/admin/proadd','admin@proadd');
 

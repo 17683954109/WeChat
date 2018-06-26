@@ -86,7 +86,7 @@
                         <div id="fileList" class="uploader-list"></div>
                         <input type="file" name="jg" id="mFile" multiple="multiple">
                         <div id="filePicker"></div>
-                        <button id="btn-star" class="btn btn-default btn-uploadstar radius ml-10" onclick="startup()" style="margin-left: 0;margin-top: 15px">开始上传</button>
+                        <button id="btn-star" class="btn btn-default btn-uploadstar radius ml-10" style="margin-left: 0;margin-top: 15px">开始上传</button>
                     </div>
                 </div>
             </div>

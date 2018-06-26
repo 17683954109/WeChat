@@ -13,7 +13,7 @@
                 <li class="item">
                     <div class="portfoliobox">
                         <input class="checkbox" name="imgid" type="checkbox" onclick="add({{$v->id}})">
-                        <div class="picbox"><a href="temp/big/keting.jpg" data-lightbox="gallery" data-title="客厅1"><img src="{{$v->address}}"></a></div>
+                        <div class="picbox"><a data-lightbox="gallery"><img src="{{$v->address}}"></a></div>
                         <div class="textbox">图片ID : {{$v->id}}</div>
                     </div>
                 </li>

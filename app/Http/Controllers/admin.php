@@ -12,6 +12,18 @@ use App\Entity\detail;
 
 class admin extends Controller
 {
+//    商品添加方法
+    public function proadd(){
+        $classs=clas::all();
+        $main=Main::all();
+        return view('admin.proadd',['class'=>$classs,'main'=>$main]);
+    }
+//    获取时间方法
+    public function gettime(){
+        $time=date('Y-m-d H:i:s',time());
+        return response()->json($time,200);
+    }
+
 //    产品删除方法
     public function prodel($id){
         product::where('id',$id)->first()->delete();

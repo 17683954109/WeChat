@@ -5,7 +5,7 @@
 
         <div class="cl pd-5 bg-1 bk-gray mt-20">
             <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-                <a class="btn btn-primary radius" onclick="picture_add('添加商品','/admin/picture-add')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加商品</a>
+                <a class="btn btn-primary radius" onclick="picture_add('添加商品','/admin/proadd')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加商品</a>
                 <a class="btn btn-primary radius" onclick="picture_add('添加商品图片','/admin/picture-add')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加商品图片</a>
             </span> <span class="r">共有数据：<strong>{{$num}}</strong> 条</span> </div>
         <div class="mt-20">
