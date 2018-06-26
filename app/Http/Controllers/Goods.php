@@ -52,7 +52,7 @@ class Goods extends Controller
         $ress=product::where('id',$id)->first();
         $imgid=$ress->class_id;
         $detail=detail::select('*')->where('id',$id)->first();
-        $preimg=pre_img::select('*')->where('detail_id',$imgid)->get();
+        $preimg=pre_img::select('*')->where('detail_id',$id)->get();
         return view('product',['res'=>$res,'preimg'=>$preimg,'det'=>$detail]);
     }
     

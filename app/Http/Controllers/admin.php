@@ -8,9 +8,40 @@ use App\Entity\product;
 use App\Entity\clas;
 use App\Entity\User2;
 use App\Entity\Main;
+use App\Entity\detail;
 
 class admin extends Controller
 {
+//    产品删除方法
+    public function prodel($id){
+        product::where('id',$id)->first()->delete();
+        pre_img::where('detail_id',$id)->get()->delete();
+        detail::where('id',$id)->first()->delete();
+        return response()->json('ok',200);
+    }
+//    产品编辑方法
+    public function prochange(){
+        $id=$_POST['id'];
+        $title=$_POST['title'];
+        $content=$_POST['content'];
+        $pro=product::where('id',$id)->first();
+        $det=detail::where('id',$id)->first();
+        $det->name=$title;
+        $pro->info=$title;
+        $det->content=$content;
+        $pro->save();
+        $det->save();
+
+        return response()->json('ok',200);
+    }
+//    产品页面显示方法
+    public function proEdit($id){
+        $res=product::where('id',$id)->first();
+        $detail=detail::where('id',$id)->first();
+        $imgs=pre_img::where('detail_id',$id)->get();
+        return view('admin.proEdit',['res'=>$res,'content'=>$detail,'img'=>$imgs]);
+    }
+
 //    后台登录方法
     public function login(Request $request){
         $res=$request->input('somefield');
@@ -71,5 +102,74 @@ class admin extends Controller
         $main=Main::all();
         $pro=product::all();
         return view('admin.picture-add',['class'=>$classs,'main'=>$main,'all'=>$pro]);
+    }
+
+//    图片上传方法
+    public function imgupload(Request $request){
+//        $name=$_FILES['jg']['name'];
+//        $type=explode('.',$name);
+//        $filetype=$type[count($type)-1];
+//        $filename=md5(time().rand(100,999)).'.'.$filetype;
+//        return $filename;
+        $names='jg';
+        if (!empty($_FILES[$names]['tmp_name'])) {
+            $filept=$this->upload($names,'C:/myphp_www/PHPTutorial/WWW/wechat/laravel/public/upload',20);
+        }
+        if ($filept!='error'){
+            $id=$request->input('pro');
+            $index=strpos($filept,'/upload');
+            $path=substr($filept,$index);
+//            return $path;
+            $res=new pre_img;
+            $res->address=$path;
+            $res->detail_id=$id;
+            $res->save();
+            return "<script>history.go(-1);</script>";
+        }
+    }
+
+    public function upload($upName,$upDir,$upSize){
+        if (!file_exists($upDir)) {
+            mkdir($upDir);
+        }
+        if (is_uploaded_file($_FILES[$upName]['tmp_name'])) {
+            if ($_FILES[$upName]['size']<=$upSize*1024*1024) {
+                $class=explode('.',$_FILES[$upName]['name']);
+                $classs=['png','jpg','gif'];
+                if (in_array($class[count($class)-1],$classs)) {
+                    $time=md5(microtime());
+                    if (!file_exists($upDir.'/'.$class[count($class)-1])) {
+                        mkdir($upDir.'/'.$class[count($class)-1]);
+                        move_uploaded_file($_FILES[$upName]['tmp_name'],$upDir.'/'.$class[count($class)-1].'/'.$time.'.'.$class[count($class)-1]);
+//                        echo '文件上传成功！'.'存放目录：'.$upDir.'/'.$class[count($class)-1];
+                        $filepeth=$upDir.'/'.$class[count($class)-1].'/'.$time.'.'.$class[count($class)-1];
+                        return $filepeth;
+                    }else{
+                        move_uploaded_file($_FILES[$upName]['tmp_name'],$upDir.'/'.$class[count($class)-1].'/'.$time.'.'.$class[count($class)-1]);
+//                        echo '文件上传成功！'.'存放目录：'.$upDir.'/'.$class[count($class)-1];
+                        $filepeth=$upDir.'/'.$class[count($class)-1].'/'.$time.'.'.$class[count($class)-1];
+                        return $filepeth;
+                    }
+                }
+            }
+        }
+        return 'error';
+    }
+
+//    图片删除方法
+    public function imgdel(Request $request){
+        $resid=$request->input('products');
+        $resid=explode(',',$resid);
+        $del_arr=array();
+        foreach ($resid as $k=>$v){
+            $del=pre_img::where('id',$v)->first();
+            $del_arr[]=$del->address;
+            pre_img::where('id',$v)->first()->delete();
+        }
+        foreach ($del_arr as $val){
+//            return response()->json($val,200);
+            unlink('C:/myphp_www/PHPTutorial/WWW/wechat/laravel/public'.$val);
+        }
+        return response()->json('ok',200);
     }
 }

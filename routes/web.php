@@ -93,4 +93,9 @@ Route::get('/login',function (\Illuminate\Http\Request $request){
         Route::get('/admin/member-list','admin@memberlist');
         Route::get('/admin/picture-show/{id}','admin@img_show');
         Route::get('/admin/picture-add','admin@addimg');
+        Route::POST('/admin/imgadd','admin@imgupload');
+        Route::get('/admin/imgdel','admin@imgdel');
+        Route::get('/admin/productEdit/{id}','admin@proEdit');
+        Route::post('/admin/prochange','admin@prochange');
+        Route::get('/admin/prodel/{id}','admin@prodel');
 

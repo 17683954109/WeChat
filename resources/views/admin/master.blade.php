@@ -18,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/skin/default/skin.css" id="skin" />
     <link rel="stylesheet" type="text/css" href="/admin/static/h-ui.admin/css/style.css" />
     <link href="/admin/static/h-ui.admin/css/H-ui.login.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
     <!--[if IE 6]>
     <script type="text/javascript" src="/admin/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
     <script>DD_belatedPNG.fix('*');</script>
