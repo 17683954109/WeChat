@@ -13,12 +13,179 @@ use App\temp_img;
 
 class admin extends Controller
 {
+//    分类编辑ajax方法
+    public function cateChange(Request $request){
+        $mode=$request->input('mode');
+        $title=$request->input('title');
+        $content=$request->input('content');
+        $id=$request->input('id');
+        if ($mode=='main'){
+            $res=Main::where('class_id',$id)->first();
+            $res->pro_name=$title;
+            $res->preview=$content;
+            $res->save();
+            return response()->json('ok',200);
+        }else{
+            $res=clas::where('class_id',$id)->first();
+            $res->class_name=$title;
+            $res->preview=$content;
+            $res->save();
+            return response()->json('ok',200);
+        }
+        return response()->json('error',200);
+    }
+//    分类编辑方法
+    public function cateEdit($id,$mode){
+        if ($mode=='m'){
+            $res=Main::where('class_id',$id)->first();
+            return view('admin.cateEdit',['res'=>$res,'mode'=>'main']);
+        }else{
+            $res=clas::where('class_id',$id)->first();
+            return view('admin.cateEdit',['res'=>$res,'mode'=>'clas']);
+        }
+        return response()->json('error',200);
+    }
+//    分类删除方法
+    public function catedel(Request $request,$mode){
+        if ($mode=='main'){
+            $res=$request->input('products');
+            $res=explode(',',$res);
+            foreach ($res as $k=>$v){
+                Main::where('class_id',$v)->first()->delete();
+                $idss=clas::where('main_class',$v)->get();
+                $id_arr=array();
+                foreach ($idss as $ke=>$val){
+                    $id_arr[]=$val->class_id;
+                }
+                foreach ($id_arr as $kk=>$va){
+                    $proid=product::where('class_id',$va)->get();
+                    foreach ($proid as $e=>$vse){
+                        $rr=pre_img::where('detail_id',$vse)->get();
+                        foreach ($rr as $wewe=>$ds){
+                            unlink(env('FILE_PATH').$ds->address);
+                        }
+                        pre_img::where('detail_id',$vse)->delete();
+                    }
+                    product::where('class_id',$va)->delete();
+                }
+                clas::where('main_class',$v)->delete();
+
+            }
+            return response()->json('ok',200);
+        }else{
+            $re=$request->input('products');
+            $res=explode(',',$re);
+            foreach ($res as $k=>$v){
+                clas::where('class_id',$v)->delete();
+                $rr=product::where('class_id',$v)->get();
+                foreach ($rr as $kg=>$vs){
+                    $rs=pre_img::where('detail_id',$vs->id)->get();
+                    foreach ($rs as $yu){
+                        unlink(env('FILE_PATH').$yu->address);
+                    }
+                    pre_img::where('detail_id',$vs->id)->delete();
+                }
+                product::where('class_id',$v)->delete();
+            }
+            return response()->json('oks',200);
+        }
+    }
+
+//    分类列表主/子分类切换，ajax方法
+    public function shows($mode){
+        if ($mode=='main'){
+            $res=Main::all();
+            return response()->json($res,200);
+        }else{
+            $res=clas::all();
+            return response()->json($res,200);
+        }
+    }
+
+//    分类编辑页显示路由
+    public function catelist(){
+        $main=Main::all();
+        return view('admin.catelist',['main'=>$main]);
+    }
+//    分类添加接口
+    public function cateadd(Request $request){
+        $mins=$request->input('main');
+        $proname=$request->input('name');
+        $bz=$request->input('bz');
+        if ($mins=='e'){
+            $m=new Main;
+            $m->pro_name=$proname;
+            $m->preview=$bz;
+            $m->save();
+            return response()->json('ok',200);
+        }else{
+            $m=new clas;
+            $m->class_name=$proname;
+            $m->preview=$bz;
+            $mi=Main::where('class_id',$mins)->first();
+            $m->main_name=$mi->pro_name;
+            $m->main_class=$mi->class_id;
+            $m->save();
+            return response()->json('ok',200);
+        }
+    }
+//    分类编辑页面显示方法
+    public function category(){
+        $main=Main::all();
+        return view('admin.category',['main'=>$main]);
+    }
+//    产品批量删除方法
+    public function delpro(Request $request){
+        $id_arr=$request->input('products');
+        $id_arr=explode(',',$id_arr);
+        foreach ($id_arr as $k=>$v){
+            product::where('id',$v)->first()->delete();
+            detail::where('detail_id',$v)->first()->delete();
+            $path=pre_img::where('detail_id',$v)->first();
+            unlink(env('FILE_PATH').$path->address);
+            pre_img::where('detail_id',$v)->delete();
+        }
+        return response()->json('ok',200);
+    }
+//    产品添加入库方法
+    public function proreg(){
+        $clas=$_POST['clas'];
+        $ids=$_POST['ids'];
+        $content=$_POST['content'];
+        $proname=$_POST['proname'];
+        $price=$_POST['price'];
+        $pro=new product;
+        $pro->class_id=$clas;
+        $pro->info=$proname;
+        $pro->price=$price;
+        $sdress=temp_img::where('id',$ids[0])->first();
+        $pro->prview_img=$sdress->path;
+        $pro->save();
+        $id=product::where('prview_img',$sdress->path)->first();
+        $id=$id->id;
+        $sese=new detail;
+        $sese->name=$proname;
+        $sese->content=$content;
+        $sese->detail_id=$id;
+        $sese->save();
+        foreach ($ids as $k=>$v){
+           $img=new pre_img;
+           $img->detail_id=$id;
+           $ppt=temp_img::where('id',$v)->first();
+           $img->address=$ppt->path;
+           $ppt->delete();
+           $img->save();
+        }
+        return response()->json('ok',200);
+    }
+
 //    缓存图片查看方法
     public function tmpimg($id){
         $res=temp_img::where('id',$id)->first();
         $res=$res->path;
         return response()->json($res,200);
     }
+
 //    商品添加方法
     public function proadd(){
         $classs=clas::all();
@@ -26,6 +193,7 @@ class admin extends Controller
         $id=product::select('id')->orderBy('id','desc')->limit(1)->get();
         return view('admin.proadd',['class'=>$classs,'main'=>$main,'id'=>$id[0]->id+1]);
     }
+
 //    获取时间方法
     public function gettime(){
         $time=date('Y-m-d H:i:s',time());
@@ -39,13 +207,14 @@ class admin extends Controller
         detail::where('id',$id)->first()->delete();
         return response()->json('ok',200);
     }
+
 //    产品编辑方法
     public function prochange(){
         $id=$_POST['id'];
         $title=$_POST['title'];
         $content=$_POST['content'];
         $pro=product::where('id',$id)->first();
-        $det=detail::where('id',$id)->first();
+        $det=detail::where('detail_id',$id)->first();
         $det->name=$title;
         $pro->info=$title;
         $det->content=$content;
@@ -54,10 +223,11 @@ class admin extends Controller
 
         return response()->json('ok',200);
     }
+
 //    产品页面显示方法
     public function proEdit($id){
         $res=product::where('id',$id)->first();
-        $detail=detail::where('id',$id)->first();
+        $detail=detail::where('detail_id',$id)->first();
         $imgs=pre_img::where('detail_id',$id)->get();
         return view('admin.proEdit',['res'=>$res,'content'=>$detail,'img'=>$imgs]);
     }
@@ -78,12 +248,8 @@ class admin extends Controller
         if ($db->password!=sha1('se'.$pwd)){
             return response()->json('pwd error',200);
         }
-        if ($res['online']=='yes') {
-           return response()->json('ok',200)->withCookie('adminuser',"$username",3600);
-        }else{
             session(['adminuser'=>$username]);
             return response()->json('ok',200);
-        }
         
     }
 
@@ -126,14 +292,9 @@ class admin extends Controller
 
 //    图片上传方法
     public function imgupload(Request $request){
-//        $name=$_FILES['jg']['name'];
-//        $type=explode('.',$name);
-//        $filetype=$type[count($type)-1];
-//        $filename=md5(time().rand(100,999)).'.'.$filetype;
-//        return $filename;
         $names='jg';
         if (!empty($_FILES[$names]['tmp_name'])) {
-            $filept=$this->upload($names,'C:/myphp_www/PHPTutorial/WWW/wechat/laravel/public/upload',20);
+            $filept=$this->upload($names,env('FILE_PATH').'/upload',20);
         }
         if ($filept!='error'){
             $id=$request->input('pro');
@@ -170,12 +331,10 @@ class admin extends Controller
                     if (!file_exists($upDir.'/'.$class[count($class)-1])) {
                         mkdir($upDir.'/'.$class[count($class)-1]);
                         move_uploaded_file($_FILES[$upName]['tmp_name'],$upDir.'/'.$class[count($class)-1].'/'.$time.'.'.$class[count($class)-1]);
-//                        echo '文件上传成功！'.'存放目录：'.$upDir.'/'.$class[count($class)-1];
                         $filepeth=$upDir.'/'.$class[count($class)-1].'/'.$time.'.'.$class[count($class)-1];
                         return $filepeth;
                     }else{
                         move_uploaded_file($_FILES[$upName]['tmp_name'],$upDir.'/'.$class[count($class)-1].'/'.$time.'.'.$class[count($class)-1]);
-//                        echo '文件上传成功！'.'存放目录：'.$upDir.'/'.$class[count($class)-1];
                         $filepeth=$upDir.'/'.$class[count($class)-1].'/'.$time.'.'.$class[count($class)-1];
                         return $filepeth;
                     }
@@ -196,8 +355,7 @@ class admin extends Controller
             pre_img::where('id',$v)->first()->delete();
         }
         foreach ($del_arr as $val){
-//            return response()->json($val,200);
-            unlink('C:/myphp_www/PHPTutorial/WWW/wechat/laravel/public'.$val);
+            unlink(env('FILE_PATH').$val);
         }
         return response()->json('ok',200);
     }

@@ -93,12 +93,12 @@ function to(id) {
         type:"GET",
         data:{id:id},
         success:function (data) {
-            document.title=data[0][0].main_name;
+            document.title=data[0].main_name;
             document.getElementById('celll').innerHTML='';
-            document.getElementById('cellsss').innerHTML=data[0][0].main_name+'分类';
-            document.getElementById('celltitle').innerHTML=data[0][0].main_name;
+            document.getElementById('cellsss').innerHTML=data[0].main_name+'分类';
+            document.getElementById('celltitle').innerHTML=data[0].main_name;
             data.forEach(function(e){
-                document.getElementById('celll').innerHTML+='<div class="weui-cell" onclick="pro('+e[0].class_id+')"><div class="weui-cell__bd"><p>'+e[0].class_name+'</p></div><div class="weui-cell__ft">'+e[0].preview+'</div> </div>';
+                document.getElementById('celll').innerHTML+='<div class="weui-cell" onclick="pro('+e.class_id+')"><div class="weui-cell__bd"><p>'+e.class_name+'</p></div><div class="weui-cell__ft">'+e.preview+'</div> </div>';
             });
             backinfo='';
             console.log(data);

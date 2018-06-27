@@ -32,8 +32,15 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
-				<input type="text" name="proname" class="input-text">
+				<input type="text" name="proname" class="input-text" id="proname">
 				 </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品价格：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" name="price" class="input-text" id="price">
+            </div>
         </div>
 
                 <div class="row cl">
@@ -103,7 +110,7 @@
                                     id_arr.push(id);
                                     preimg.innerHTML+="<li class=\"item\" id=\"\">\n" +
                                         "                        <div class=\"portfoliobox\">\n" +
-                                        "                            <input class=\"checkbox\" name=\"imgid\" type=\"checkbox\" onclick=\"add()\">\n" +
+                                        "                            \n" +
                                         "                            <div class=\"picbox\"><a data-lightbox=\"gallery\" id=\"imgshow\"><img src='"+data+"' id='"+nums+"'/></a></div>\n" +
                                         "                        </div>\n" +
                                         "                    </li>";
@@ -123,7 +130,7 @@
 
         <div class="page-container">
             <div class="cl pd-5 bg-1 bk-gray mt-20" style="margin-left: 15%">
-                <span class="l"><a onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span>
+                {{--<span class="l"><a onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span>--}}
                 <span style="color: red;display: none" id="toasts"></span>
             </div>
             <div class="portfolio-content">
@@ -135,10 +142,9 @@
 
         <div class="row cl">
             <div class="col-9 col-offset-2">
-                <input class="btn btn-primary radius" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" onclick="sendChange()" id="res">
+                <input class="btn btn-primary radius" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" onclick="sendform()" id="resss">
             </div>
         </div>
-
 
     </div>
     <script>
@@ -166,6 +172,56 @@
                 document.getElementById('mImg').src = e.target.result;
             }
 
+        }
+        function sendform() {
+            if (id_arr.length==0){
+                document.getElementById('resss').value='请上传一张图片';
+                setTimeout(function () {
+                    document.getElementById('resss').value='提交';
+                },1500);
+                return;
+            }
+            let clas=document.getElementById('classss').value;
+            let content=document.getElementById('content').value;
+            let proname=document.getElementById('proname').value;
+            let price=document.getElementById('price').value;
+            if (price==''||content==''||proname==''){
+                document.getElementById('resss').value='请认真填写';
+                setTimeout(function () {
+                    document.getElementById('resss').value='提交';
+                },1500);
+                return;
+            }
+            document.getElementById('resss').value='正在添加...';
+            $.ajax({
+                url:'/admin/proreg',
+                type:'POST',
+                data:{
+                    clas:clas,
+                    ids:id_arr,
+                    price:price,
+                    content:content,
+                    proname:proname,
+                    _token:"{{csrf_token()}}"
+                },
+                success:function (data) {
+                    console.log(data);
+                    if (data=='ok'){
+                        document.getElementById('resss').value='添加成功!';
+                        setTimeout(function () {
+                            document.getElementById('resss').value='提交';
+                        },1500);
+                    }
+
+                },
+                error:function (data,status,tst) {
+                    console.log(data);
+                    document.getElementById('resss').value='添加失败!';
+                    setTimeout(function () {
+                        document.getElementById('resss').value='重试';
+                    },1500);
+                }
+            })
         }
     </script>
 @endsection

@@ -22,18 +22,19 @@ class Goods extends Controller
     // 二级分类ajax访问方法
     public function det(){
         $id=$_GET['id'];
-        $resid=Main::select('class_det')->where('class_id',$id)->get();
-        $resid=$resid[0]['class_det'];
-        $res=array();
-        if (strstr($resid,',')){
-            $resid=explode(',',$resid);
-            for ($i=0;$i<(count($resid));$i++){
-                $idss=intval($resid[$i]);
-                $res[$i]=clas::where('class_id',$idss)->get();
-            }
-        }else{
-        $res[]=clas::where('class_id',$resid)->get();
-        }
+//        $resid=Main::select('class_det')->where('class_id',$id)->get();
+//        $resid=$resid[0]['class_det'];
+//        $res=array();
+//        if (strstr($resid,',')){
+//            $resid=explode(',',$resid);
+//            for ($i=0;$i<(count($resid));$i++){
+//                $idss=intval($resid[$i]);
+//                $res[$i]=clas::where('class_id',$idss)->get();
+//            }
+//        }else{
+//        $res[]=clas::where('class_id',$resid)->get();
+//        }
+        $res=clas::where('main_class',$id)->get();
         return $res;
     }
 
@@ -51,7 +52,7 @@ class Goods extends Controller
         $res=product::select('*')->where('id',$id)->first();
         $ress=product::where('id',$id)->first();
         $imgid=$ress->class_id;
-        $detail=detail::select('*')->where('id',$id)->first();
+        $detail=detail::select('*')->where('detail_id',$id)->first();
         $preimg=pre_img::select('*')->where('detail_id',$id)->get();
         return view('product',['res'=>$res,'preimg'=>$preimg,'det'=>$detail]);
     }

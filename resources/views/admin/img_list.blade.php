@@ -4,7 +4,7 @@
     <div class="page-container">
 
         <div class="cl pd-5 bg-1 bk-gray mt-20">
-            <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+            <span class="l"><a href="javascript:;" onclick="prodel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
                 <a class="btn btn-primary radius" onclick="picture_add('添加商品','/admin/proadd')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加商品</a>
                 <a class="btn btn-primary radius" onclick="picture_add('添加商品图片','/admin/picture-add')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加商品图片</a>
             </span> <span class="r">共有数据：<strong>{{$num}}</strong> 条</span> </div>
@@ -12,7 +12,7 @@
             <table class="table table-border table-bordered table-bg table-hover table-sort">
                 <thead>
                 <tr class="text-c">
-                    <th width="40"><input name="" type="checkbox" value=""></th>
+                    <th width="40"><input name="" type="checkbox" value="" onclick="selectss()"></th>
                     <th width="80">ID</th>
                     <th width="100">主分类</th>
                     <th width="100">封面</th>
@@ -26,7 +26,7 @@
                 <tbody>
                 @foreach($id as $k=>$v)
                 <tr class="text-c">
-                    <td><input name="" type="checkbox" value=""></td>
+                    <td><input name="delids" type="checkbox" value="{{$v->id}}" onchange="get({{$v->id}})" id="{{$v->id}}"></td>
                     <td>{{$v->id}}</td>
                     <td>{{$name[$k]->main_name}}</td>
                     <td><a href="javascript:;" onClick="picture_edit('图库编辑','/admin/picture-show/{{$v->id}}','10001')"><img width="100" class="picture-thumb" src="{{$v->prview_img}}"></a></td>
@@ -34,7 +34,7 @@
                     <td class="text-c">{{$name[$k]->class_name}}</td>
                     <td>{{$v->updated_at}}</td>
                     <td class="td-status"><span class="label label-success radius">已发布</span></td>
-                    <td class="td-manage"><a style="text-decoration:none" class="ml-5" onClick="picture_edit('正在编辑商品: {{$v->info}}','/admin/productEdit/{{$v->id}}','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="picture_del(this,{{$v->id}})" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                    <td class="td-manage"><a style="text-decoration:none" class="ml-5" onClick="picture_edit('正在编辑商品: {{$v->info}}','/admin/productEdit/{{$v->id}}','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onclick="prodel({{$v->id}})" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
                 </tr>
                     @endforeach
                 </tbody>
@@ -53,6 +53,22 @@
     <script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
     <script type="text/javascript">
+        function selectss() {
+            var checked=$('input:checkbox[name=delids]').attr('checked');
+            if (checked=='checked'){
+                $('input:checkbox[name=delids]').attr('checked',false);
+            }else{
+                $('input:checkbox[name=delids]').attr('checked','checked');
+            }
+        }
+        function get(id){
+            var checked=$('#'+id).attr('checked');
+            if (checked=='checked'){
+                $('#'+id).attr('checked',false);
+            }else{
+                $('#'+id).attr('checked','checked');
+            }
+        }
         $('.table-sort').dataTable({
             "aaSorting": [[ 1, "desc" ]],//默认第几个排序
             "bStateSave": true,//状态保存
@@ -155,6 +171,37 @@
                     },
                 });
             });
+        }
+        function prodel(id='') {
+            var item_arr=[];
+            $('input:checkbox[name=delids]').each(function(index,el) {
+                if ($(this).attr('checked') == 'checked'){
+                    item_arr.push($(this).attr('id'));
+                }
+            });
+            if (item_arr.length==0&&id==''){
+                layer.msg('请选择删除项!',{icon:2,time:2000});
+                // alert('添加成功!');
+                return;
+            }
+            if (id!=''){
+                item_arr=[];
+                item_arr.push(id);
+            }
+            console.log(item_arr);
+            $.ajax({
+                url:'/admin/delpro',
+                type:'GET',
+                data:{products:item_arr+''},
+                success:function (data) {
+                    layer.msg('删除成功!',{icon:1,time:2000});
+                    location.reload();
+                },
+                error:function (data,status,txt) {
+                    console.log(data);
+                    layer.msg('删除失败!',{icon:2,time:2000});
+                }
+            })
         }
     </script>
 @endsection
