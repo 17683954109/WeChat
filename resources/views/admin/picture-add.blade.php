@@ -1,8 +1,6 @@
 @extends('admin.master')
 @section('content')
-        {{--<div class="form form-horizontal" id="form-article-add">--}}
-            <form action="/admin/imgadd" method="post" class="form form-horizontal" id="form-article-add" enctype="multipart/form-data">
-                {{csrf_field()}}
+            <div class="form form-horizontal" id="form-article-add">
             <div class="row cl">
                 <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>主分类：</label>
                 <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
@@ -51,8 +49,12 @@
             </div>
 
 <script>
+    let addinfo='s';
     window.onload=(getmains());
     function getmains() {
+        if (addinfo=='y'){
+            document.getElementById('imgshow').innerHTML='';
+        }
         document.getElementById('classss').innerHTML='';
         let mainsv=document.getElementById('mains').value;
         for (var i=0;i<idss.length;i++){
@@ -77,21 +79,72 @@
         }
     }
 </script>
-            <div class="row cl">
-                <label class="form-label col-xs-4 col-sm-2">缩略图：</label>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">商品图片：</label>
 
-                <div class="formControls col-xs-8 col-sm-9">
-                    <div class="uploader-thum-container">
-                        <img src="" id="mImg" width="100"/>
-                        <div id="fileList" class="uploader-list"></div>
-                        <input type="file" name="jg" id="mFile" multiple="multiple">
-                        <div id="filePicker"></div>
-                        <button id="btn-star" class="btn btn-default btn-uploadstar radius ml-10" style="margin-left: 0;margin-top: 15px">开始上传</button>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <div class="uploader-thum-container" id="imgup">
+                            <img src="" id="mImg" width="100"/>
+                            <div id="fileList" class="uploader-list"></div>
+                            <input type="file" name="jg" id="mFile" multiple="multiple">
+                            <script>
+                                //文件上传
+                                let id;
+                                function ajaxFileUpload() {
+                                    addinfo='y';
+                                let imgid=document.getElementById('classs').value;
+                                    var formData = new FormData();
+                                    formData.append("jg", $("#mFile")[0].files[0]);
+                                    formData.append("_token",'{{csrf_token()}}');
+                                    formData.append('pro',imgid);
+                                    $.ajax({
+                                        url: '/admin/imgadd',
+                                        type: 'POST',
+                                        data: formData,
+                                        processData: false,
+                                        contentType: false,
+                                        success: function (msg) {
+                                            console.log(msg);
+                                            id=msg;
+                                            getimgs(msg);
+                                        },
+                                        error:function (data,status,sts) {
+                                            console.log(data);
+                                        }
+                                    });
+                                }
+                                let nums=0;
+                                let id_arr=[];
+                                function getimgs(id) {
+                                            let preimg=document.getElementById('imgshow');
+                                            preimg.innerHTML+="<li class=\"item\" id=\"\">\n" +
+                                                "                        <div class=\"portfoliobox\">\n" +
+                                                "                            \n" +
+                                                "                            <div class=\"picbox\"><a data-lightbox=\"gallery\" id=\"imgshow\"><img src='"+id+"' id='"+nums+"'/></a></div>\n" +
+                                                "                        </div>\n" +
+                                                "                    </li>";
+
+                                }
+                            </script>
+                            <div id="filePicker"></div>
+                            <button id="btn-star" class="btn btn-default btn-uploadstar radius ml-10" style="margin-left: 0;margin-top: 15px"onclick="ajaxFileUpload()">开始上传</button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-                </form>
+
+                <div class="row cl" style="margin-left: 15%">
+                    <div class="cl pd-5 bg-1 bk-gray mt-20" style="margin-left: 15%">
+                        <span style="color: red;display: none" id="toasts"></span>
+                    </div>
+                    <div class="portfolio-content">
+                        <ul class="cl portfolio-area" id="imgshow">
+
+                        </ul>
+                    </div>
+                </div>
+
+                </div>
     <script>
         let fills;
         document.getElementById('mFile').onchange = function (ev) {

@@ -294,7 +294,11 @@ class admin extends Controller
 //    产品删除方法
     public function prodel($id){
         product::where('id',$id)->first()->delete();
-        pre_img::where('detail_id',$id)->get()->delete();
+        $res=pre_img::where('detail_id',$id)->get();
+        foreach ($res as $k=>$v){
+            unlink(env('FILE_PATH').$v->address);
+        }
+        pre_img::where('detail_id',$id)->delete();
         detail::where('id',$id)->first()->delete();
         return response()->json('ok',200);
     }
@@ -405,8 +409,15 @@ class admin extends Controller
             $res->address=$path;
             $res->detail_id=$id;
             $res->save();
-            return "<script>history.go(-1);</script>";
+            return response()->json($path,200);
         }
+    }
+
+//    ajax上传商品图片查看方法
+    public function getimg($id){
+        $res=pre_img::where('address',$id)->first();
+        $res=$res->address;
+        return response()->json($res,200);
     }
 
     public function upload($upName,$upDir,$upSize){

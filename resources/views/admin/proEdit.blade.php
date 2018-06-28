@@ -76,6 +76,7 @@
                 }
             })
         }
+        let oldid=[];
         let ids=[];
         function add(id) {
             for(let i=0;i<ids.length;i++){
@@ -91,7 +92,15 @@
                 alert('请选择删除项!');
                 return;
             }
-
+            if (oldid.length>0){
+                for (let i=0;i<ids.length;i++){
+                    for (let s=0;s<oldid.length;s++){
+                        if (ids[i]==oldid[s]){
+                            ids.splice(i,1);
+                        }
+                    }
+                }
+            }
             $.ajax({
                 type:'GET',
                 url:'/admin/imgdel',
@@ -107,7 +116,8 @@
                         document.getElementById('toasts').innerHTML='';
                     },1000);
                     ids.forEach(function (e) {
-                        document.getElementById(e).style.display='none';
+                        $('#'+e).remove();
+                        oldid.push(e);
                     })
                 },
                 error:function (data,status,txt) {

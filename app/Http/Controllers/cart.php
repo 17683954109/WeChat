@@ -80,7 +80,7 @@ class cart extends Controller
             $count[]=(int) substr($value,$index+1);
             $cart_arr[]=product::select('info')->where('id',$id)->first();
             $proid[]=$id;
-            $proimg[]=pre_img::select('address')->where('id',$id)->first();
+            $proimg[]=pre_img::select('address')->where('detail_id',$id)->first();
             $cartprc[]=product::select('price')->where('id',$id)->first();
             $prctotal[]=$cartprc[$key]->price*$prnum;
         }

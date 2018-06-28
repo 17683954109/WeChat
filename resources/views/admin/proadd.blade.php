@@ -128,7 +128,7 @@
         </div>
 
 
-        <div class="page-container">
+        <div class="row cl" style="margin-left: 15%">
             <div class="cl pd-5 bg-1 bk-gray mt-20" style="margin-left: 15%">
                 {{--<span class="l"><a onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span>--}}
                 <span style="color: red;display: none" id="toasts"></span>

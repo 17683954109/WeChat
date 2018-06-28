@@ -4,7 +4,7 @@
 	<table class="table table-border table-bordered table-bg mt-20">
 		<tbody>
 			<tr>
-				<th width="30%">服务器</th>
+				<th width="30%">服务器名称</th>
 				<td><span id="lbServerName"><?=$_SERVER['SERVER_SOFTWARE']?></span></td>
 			</tr>
 			<tr>

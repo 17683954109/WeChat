@@ -195,6 +195,9 @@ Route::get('/login',function (\Illuminate\Http\Request $request){
 
 //        管理员退出登录路由
         Route::get('/admin/logout','admin@logout');
+
+//        图片异步上传立即查看方式
+        Route::get('/admin/getimg/{id}','admin@getimg');
     });
 //        后台登录页显示路由
         Route::get('/admin/login',function(){
