@@ -175,11 +175,26 @@ Route::get('/login',function (\Illuminate\Http\Request $request){
 //        分类删除ajax路由
         Route::get('/admin/catedel/{mode}','admin@catedel');
 
-//        分类编辑详细页显示
+//        分类编辑详细页显示路由
         Route::get('/admin/cateEdit/{id}/{mode}','admin@cateEdit');
 
 //        分类编辑ajax路由
         Route::post('/admin/cateChange','admin@cateChange');
+
+//        订单管理页显示路由
+        Route::get('/admin/orderlist','admin@orderlist');
+
+//        订单详情页显示路由
+        Route::get('/admin/orderinfo/{order_id}','admin@orderinfo');
+
+//        订单发货ajax路由
+        Route::get('/admin/orderchange','admin@orderchange');
+
+//        订单删除ajax路由
+        Route::post('/admin/order_del','admin@order_del');
+
+//        管理员退出登录路由
+        Route::get('/admin/logout','admin@logout');
     });
 //        后台登录页显示路由
         Route::get('/admin/login',function(){

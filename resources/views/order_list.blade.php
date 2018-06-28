@@ -26,7 +26,7 @@
                     </p>
                     <p>
                         <label class="weui-form-preview__label">订单状态</label>
-                        <span class="weui-form-preview__value">@if($state[$kk]=='pay')已完成@elseif($state[$kk]=='no pay')未支付@else处理中@endif</span>
+                        <span class="weui-form-preview__value">@if($state[$kk]=='pay')已支付@elseif($state[$kk]=='no pay')未支付@else已支付，已发货@endif</span>
                     </p>
                     <p>
                         <label class="weui-form-preview__label">创建时间</label>

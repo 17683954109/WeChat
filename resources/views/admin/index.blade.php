@@ -9,10 +9,10 @@
                     <ul class="cl">
                         <li>超级管理员</li>
                         <li class="dropDown dropDown_hover">
-                            <a href="#" class="dropDown_A"><?=session('user')?> <i class="Hui-iconfont">&#xe6d5;</i></a>
+                            <a href="#" class="dropDown_A"><?=session('adminuser')?> <i class="Hui-iconfont">&#xe6d5;</i></a>
                             <ul class="dropDown-menu menu radius box-shadow">
                                 <li><a href="/admin/login">切换账户</a></li>
-                                <li><a href="#">退出</a></li>
+                                <li><a href="/admin/logout">退出</a></li>
                             </ul>
                         </li>
                         {{--<li id="Hui-msg"> <a href="#" title="消息"><span class="badge badge-danger">5</span><i class="Hui-iconfont" style="font-size:18px">&#xe68a;</i></a> </li>--}}
@@ -58,29 +58,10 @@
                 <dt><i class="Hui-iconfont">&#xe687;</i> 订单管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
                 <dd>
                     <ul>
-                        <li><a data-href="system-base.html" data-title="系统设置" href="javascript:void(0)">系统设置</a></li>
-                        <li><a data-href="system-category.html" data-title="栏目管理" href="javascript:void(0)">栏目管理</a></li>
-                        <li><a data-href="system-data.html" data-title="数据字典" href="javascript:void(0)">数据字典</a></li>
-                        <li><a data-href="system-shielding.html" data-title="屏蔽词" href="javascript:void(0)">屏蔽词</a></li>
-                        <li><a data-href="system-log.html" data-title="系统日志" href="javascript:void(0)">系统日志</a></li>
+                        <li><a data-href="/admin/orderlist" data-title="订单列表" href="javascript:void(0)">订单列表</a></li>
                     </ul>
                 </dd>
             </dl>
-                <?php
-                if (session('adminuser')=='17683954109'){
-                    ?>
-                <dl id="menu-admin">
-                    <dt><i class="Hui-iconfont">&#xe62d;</i> 管理员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-                    <dd>
-                        <ul>
-                            <li><a data-href="admin-permission.html" data-title="权限管理" href="javascript:void(0)">权限管理</a></li>
-                            <li><a data-href="admin-list.html" data-title="管理员列表" href="javascript:void(0)">管理员列表</a></li>
-                        </ul>
-                    </dd>
-                </dl>
-                <?php
-                    }
-                ?>
         </div>
     </aside>
     <div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>

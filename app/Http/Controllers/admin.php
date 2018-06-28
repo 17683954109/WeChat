@@ -10,9 +10,100 @@ use App\Entity\User2;
 use App\Entity\Main;
 use App\Entity\detail;
 use App\temp_img;
+use App\Entity\order;
+use App\Entity\order_shutcut;
+use App\order_detail;
 
 class admin extends Controller
 {
+//    管理员退出登录方法
+    public function logout(){
+        session(['adminuser'=>'']);
+        return redirect('/admin/login');
+    }
+//    订单删除ajax方法
+    public function order_del(Request $request){
+        $oid=$request->input('id');
+        if ($oid!=null&&$oid!=''){
+            order::where('order_id',$oid)->first()->delete();
+            order_shutcut::where('order_id',$oid)->first()->delete();
+            return response()->json('ok',200);
+        }
+        return response()->json('error',200);
+    }
+//    订单发货ajax方法
+    public function orderchange(){
+        $order_id=session('order');
+        if ($order_id!=null&&$order_id!=''){
+            $od=order::where('order_id',$order_id)->first();
+            $od->state='complate';
+            $od->save();
+            return response()->json('ok',200);
+        }
+        return response()->json('error',200);
+    }
+
+//      订单详情发货显示方法
+    public function orderinfo($order_id){
+        // 从数据库中读取价格和商品信息快照
+        $order_res=order::where('order_id',$order_id)->first();
+        $Collect=order_detail::where('id',$order_res->detail_id)->first();
+        $state=$order_res->state;
+        $price_res=order_shutcut::where('order_id',$order_id)->first();
+        $prc_arr=explode(',',$price_res->price);
+        $pro_arr=explode(',',$order_res->proinfo);
+        // 创建需要读取的商品信息数组
+        $img=array();
+        $prc=array();
+        $nums=array();
+        $info=array();
+        $total=0;
+        $pro_ids=array();
+        // 获取并生成需要的信息
+        foreach ($pro_arr as $key => $value) {
+            $index=strpos($value,':');
+            $id=substr($value,0,$index);
+            $count=substr($value,$index+1);
+            foreach ($prc_arr as $k => $val) {
+                $indexs=strpos($val,':');
+                $ids=substr($val,0,$indexs);
+                $price=substr($val,$indexs+1);
+                if ($id==$ids) {
+                    $pro=product::where('id',$id)->first();
+                    $img[]=$pro->prview_img;
+                    $prc[]=$price;
+                    $nums[]=$count;
+                    $info[]=$pro->info;
+                    $total+=$price*$count;
+                    $pro_ids[]=$id;
+                    break;
+                }
+            }
+        }
+        session(['order'=>$order_id]);  //  以session 方式存储订单id，防止订单id 被篡改
+        // 返回用户视图并传递视图层需要的所有数据,方法结束
+        return view('admin.order_detail',[
+            'image'=>$img,
+            'price'=>$prc,
+            'nums'=>$nums,
+            'title'=>$info,
+            'order_id'=>$order_id,
+            'state'=>$state,
+            'total'=>$total,
+            'proid'=>$pro_ids,
+            'collect'=>$Collect
+        ]);
+    }
+
+//    订单编辑页显示方法
+    public function orderlist(){
+        $res=order::orderBy('id','desc')->get();
+        $order=array();
+        foreach ($res as $k=>$v){
+            $order[]=order_detail::where('id',$v->detail_id)->first();
+        }
+        return view('admin.orderlist',['res'=>$res,'info'=>$order]);
+    }
 //    分类编辑ajax方法
     public function cateChange(Request $request){
         $mode=$request->input('mode');
