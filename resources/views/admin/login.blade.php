@@ -82,6 +82,7 @@
                     </script>
                 </div>
                 <div class="row cl">
+                    <p id="tips" style="color: red;margin-left:180px"></p>
                     <div class="formControls col-xs-8 col-xs-offset-3">
                         <input onclick="login()" name="" type="submit" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
                         <input name="" type="reset" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">
@@ -108,11 +109,34 @@
                 },
                 success:function (data) {
                    if (data=='ok') {
-                       setTimeout(function () {
-                           location.href='/admin/index';
-                       },1000);
 
-                   }
+                        location.href='/admin/index';
+
+                    }
+                    if (data=='code error') {
+
+                        document.getElementById('tips').innerHTML='验证码错误';
+                        setTimeout(function () {
+                            document.getElementById('tips').innerHTML='';
+                        },1500);
+
+                    }
+                    if (data=='pwd error') {
+
+                        document.getElementById('tips').innerHTML='密码错误';
+                        setTimeout(function () {
+                            document.getElementById('tips').innerHTML='';
+                        },1500);
+
+                    }
+                    if (data=='user not exits') {
+
+                        document.getElementById('tips').innerHTML='用户名错误或不存在';
+                        setTimeout(function () {
+                            document.getElementById('tips').innerHTML='';
+                        },1500);
+
+                    }
                     console.log(data);
                 },
                 error:function (data,status,error) {

@@ -18,10 +18,20 @@
                 </div>
             </div>
 
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">
+                    <span class="c-red">*</span>
+                    商品价格：</label>
+                <div class="formControls col-xs-6 col-sm-6">
+                    <input type="text" class="input-text" value="{{$res->price}}" placeholder="" id="price" name="product-category-name">
+                </div>
+            </div>
+
 
             <div class="page-container" style="margin-left: 15%">
                 <div class="cl pd-5 bg-1 bk-gray mt-20">
                     <span class="l"><a onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span>
+                    <span class="l"><a onclick="totop({{$res->id}})" class="btn btn-primary radius" style="margin-left: 15px"><i class="Hui-iconfont">&#xe646;</i> 设为封面</a></span>
                     <span style="color: red;display: none" id="toasts"></span>
                 </div>
                 <div class="portfolio-content">
@@ -50,9 +60,42 @@
 
     </div>
     <script type="text/javascript">
+        function totop(idsss) {
+            if (ids.length>1){
+                document.getElementById('toasts').innerHTML='暂时只支持一张图片设为封面!';
+                document.getElementById('toasts').style.display='block';
+                // alert('添加成功!');
+                setTimeout(function () {
+                    document.getElementById('toasts').style.display='none';
+                    document.getElementById('toasts').innerHTML='';
+                },1000);
+                return;
+            }
+            let img=ids[0];
+            $.ajax({
+                url:'/admin/imgtotop/'+img+'/'+idsss,
+                type:'GET',
+                success:function (data) {
+                    if (data=='ok'){
+                        document.getElementById('toasts').innerHTML='设置成功!';
+                        document.getElementById('toasts').style.display='block';
+                        // alert('添加成功!');
+                        setTimeout(function () {
+                            document.getElementById('toasts').style.display='none';
+                            document.getElementById('toasts').innerHTML='';
+                        },1000);
+                    }
+                },
+                error:function (data,status,sts) {
+                    console.log(data);
+                }
+
+            })
+        }
         function sendChange(id) {
             let title=document.getElementById('proname').value;
             let content=document.getElementById('content').value;
+            let prc=document.getElementById('price').value;
             $.ajax({
                 url:'/admin/prochange',
                 type:'POST',
@@ -60,6 +103,7 @@
                     title:title,
                     content:content,
                     id:id,
+                    price:prc,
                     _token:"{{csrf_token()}}"
                 },
                 success:function (data) {

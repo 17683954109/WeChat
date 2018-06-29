@@ -209,6 +209,9 @@ Route::get('/login',function (\Illuminate\Http\Request $request){
 
 //        图片异步上传立即查看方式
         Route::get('/admin/getimg/{id}','admin@getimg');
+
+//        将图片设为封面ajax路由
+        Route::get('/admin/imgtotop/{imgid}/{proid}','admin@imgtotop');
     });
 //        后台登录页显示路由
         Route::get('/admin/login',function(){

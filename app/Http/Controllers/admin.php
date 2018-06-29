@@ -16,6 +16,14 @@ use App\order_detail;
 
 class admin extends Controller
 {
+//    将图片设为封面ajax方法
+    public function imgtotop($imgid,$proid){
+        $img=pre_img::where('id',$imgid)->first();
+        $pro=product::where('id',$proid)->first();
+        $pro->prview_img=$img->address;
+        $pro->save();
+        return response()->json('ok',200);
+    }
 //    管理员退出登录方法
     public function logout(){
         session(['adminuser'=>'']);
@@ -308,11 +316,13 @@ class admin extends Controller
         $id=$_POST['id'];
         $title=$_POST['title'];
         $content=$_POST['content'];
+        $price=$_POST['price'];
         $pro=product::where('id',$id)->first();
         $det=detail::where('detail_id',$id)->first();
         $det->name=$title;
         $pro->info=$title;
         $det->content=$content;
+        $pro->price=$price;
         $pro->save();
         $det->save();
 

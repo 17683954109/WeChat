@@ -17,7 +17,7 @@ use App\areas;
 
 class cart extends Controller
 {
-//    添加新收获地址方法
+//    添加新收货地址方法
     public function newadd(Request $request){
         $name=$request->input('name');
         $provin=$request->input('province');
