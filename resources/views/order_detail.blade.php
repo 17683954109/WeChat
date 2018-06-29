@@ -23,6 +23,18 @@
                     </div>
                     @if($state=='no pay')
 <div style="position: fixed;left: 0;width: 100%;bottom: 80px;z-index: 90;background: #FFFFFF">
+    <p class="weui-cells__title">收件人:</p>
+    <div class="weui-cell__bd">
+        <p style="font-size: 12px;text-indent: 2em">{{$add->name}}</p>
+    </div>
+    <p class="weui-cells__title">联系电话:</p>
+    <div class="weui-cell__bd">
+        <p style="font-size: 12px;text-indent: 2em">{{$add->phone}}</p>
+    </div>
+    <p class="weui-cells__title">详细地址:</p>
+    <div class="weui-cell__bd">
+        <p style="font-size: 12px;text-indent: 2em">{{$add->address}}</p>
+    </div>
 <p class="weui-cells__title">支付方式</p>
     <div class="weui-cells weui-cells_radio">
         <label class="weui-cell weui-check__label" for="x11">

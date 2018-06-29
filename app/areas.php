@@ -4,8 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class order_detail extends Model
+class areas extends Model
 {
-    protected $table='order_detail';
+    protected $tables='areas';
     public $timestamps=false;
 }

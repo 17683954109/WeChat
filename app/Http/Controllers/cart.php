@@ -7,16 +7,71 @@ use App\Entity\cart as carts;
 use App\Entity\pre_img;
 use Illuminate\Support\Facades\Cookie;
 use App\Entity\order;
+use App\Entity\User2;
 use App\Entity\order_shutcut;
+use App\order_detail;
+use App\provinces;
+use App\cities;
+use App\areas;
 
 
 class cart extends Controller
 {
+//    添加新收获地址方法
+    public function newadd(Request $request){
+        $name=$request->input('name');
+        $provin=$request->input('province');
+        $provin=provinces::where('provinceid',$provin)->first();
+        $provin=$provin->province;
+        $city=$request->input('city');
+        $city=cities::where('cityid',$city)->first();
+        $city=$city->city;
+        $area=$request->input('area');
+        $area=areas::where('areaid',$area)->first();
+        $area=$area->area;
+        $phone=$request->input('tel');
+        $detail=$request->input('detail');
+        $address=$provin.$city.$area.$detail;
+        $user=session('user');
+        $userid=User2::where('phone',$user)->first();
+        if ($userid==null||$userid==''){
+            $userid=User2::where('email',$user)->first();
+        }
+        $user=$userid->id;
+        $odet=new order_detail;
+        $odet->userid=$user;
+        $odet->address=$address;
+        $odet->phone=$phone;
+        $odet->name=$name;
+        $odet->save();
+        return response()->json('ok',200);
+    }
+//      获取县的信息方法
+    public function getarea($id){
+        $res=areas::where('cityid',$id)->get();
+        return response()->json($res,200);
+    }
+//    获取城市ajax方法
+    public function getcity($id){
+        $res=cities::where('provinceid',$id)->get();
+        return response()->json($res,200);
+    }
+//    添加收货地址方法
+    public function addressAdd(){
+        $res=provinces::all();
+        return view('address',['pro'=>$res]);
+    }
     // 商品立即购买方法
     public function pay($id,$num){
         $price=product::select('*')->where('id',$id)->first();
         $totalprice=$price->price*$num;
-        return view('pay',['price'=>$price,'total'=>$totalprice,'num'=>$num,'user'=>session('user')]);
+        $address=User2::where('phone',session('user'))->first();
+        if ($address==null||$address==''){
+            $address=User2::where('email',session('user'))->first();
+        }
+        $address=$address->id;
+        $address=order_detail::where('userid',$address)->get();
+        return view('pay',['price'=>$price,'total'=>$totalprice,'num'=>$num,'user'=>session('user'),'add'=>$address]);
     }
 
     // 购物车查看方法
@@ -198,8 +253,10 @@ class cart extends Controller
             $order=new order;
             $order->order_id=$order_id;
             $order->state='no pay';
+            $detail=$request->input('address');
             $order->user=session('user');
             $order->proinfo=$proinfo;
+            $order->detail_id=$detail;
             $order->save();
             $order_shutcut=new order_shutcut;
             $order_shutcut->order_id=$order_id;
@@ -209,11 +266,17 @@ class cart extends Controller
             $cart_info=implode(',',$cart_info);
             $cart_inf->proinfo=$cart_info;
             $cart_inf->save();
-            return view('order',['pro'=>$product,'num'=>$nums,'total'=>$totalprice,'isaddorder'=>'yes']);
+            $address=order_detail::where('id',$detail)->first();
+            return view('order',['pro'=>$product,'num'=>$nums,'total'=>$totalprice,'isaddorder'=>'yes','add'=>$address]);
         }
-
+        $address=User2::where('phone',session('user'))->first();
+        if ($address==null||$address==''){
+            $address=User2::where('email',session('user'))->first();
+        }
+        $address=$address->id;
+        $address=order_detail::where('userid',$address)->get();
           // 返回视图，方法结束
-        return view('order',['pro'=>$product,'num'=>$nums,'total'=>$totalprice,'isaddorder'=>'no','item_arr'=>$res_arr]);
+        return view('order',['pro'=>$product,'num'=>$nums,'total'=>$totalprice,'isaddorder'=>'no','item_arr'=>$res_arr,'add'=>$address]);
     }
 
     // 获取用户订单列表方法
@@ -263,6 +326,8 @@ class cart extends Controller
         // 从数据库中读取价格和商品信息快照
         $order_res=order::where('order_id',$order_id)->first();
         $state=$order_res->state;
+        $address=$order_res->detail_id;
+        $address=order_detail::where('id',$address)->first();
         $price_res=order_shutcut::where('order_id',$order_id)->first();
         $prc_arr=explode(',',$price_res->price);
         $pro_arr=explode(',',$order_res->proinfo);
@@ -303,7 +368,8 @@ class cart extends Controller
             'order_id'=>$order_id,
             'state'=>$state,
             'total'=>$total,
-            'proid'=>$pro_ids
+            'proid'=>$pro_ids,
+            'add'=>$address
         ]);
     }
     public function delorder($order_id){

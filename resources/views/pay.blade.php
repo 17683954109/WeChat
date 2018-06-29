@@ -22,6 +22,16 @@
                 <label class="weui-form-preview__label">收件人</label>
                 <span class="weui-form-preview__value" style="color: red">{{$user}}</span>
             </p>
+            <p>
+                <label class="weui-form-preview__label">收货地址</label>
+                <select class="weui-select" name="select2" style="border: rgba(25,25,25,0.3) solid 1px" onchange="addnew()" id="addnew">
+                    @foreach($add as $k=>$v)
+                    <option value="{{$v->id}}">{{$v->address}}</option>
+                    @endforeach
+                        <option value="addnew">添加新地址</option>
+                </select>
+            </p>
+            </div>
         </div>
         <div class="weui-form-preview__ft">
             <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">立即支付</a>
@@ -57,5 +67,12 @@
     let swasa=addnum.value*{{$price->price}};
         total.innerHTML='￥'+swasa.toFixed(1);
     }}
+    function addnew() {
+        let sys=document.getElementById('addnew').value;
+        if (sys=='addnew'){
+            window.location.href='/cart/addressAdd';
+        }
+
+    }
     </script>
 @endsection

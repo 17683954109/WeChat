@@ -102,7 +102,18 @@ Route::get('/login',function (\Illuminate\Http\Request $request){
 
 //        订单删除ajax路由
         Route::get('/delorder/{order_id}','cart@delorder');
-        
+
+//        新增收货地址路由
+        Route::get('/cart/addressAdd','cart@addressAdd');
+
+//        获取城市ajax路由
+        Route::get('/cart/getcity/{id}','cart@getcity');
+
+//        获取县信息路由
+        Route::get('/cart/getarea/{id}','cart@getarea');
+
+//        添加新地址ajax路由
+        Route::post('/cart/addaddress','cart@newadd');
     });
 
     //后台路由组

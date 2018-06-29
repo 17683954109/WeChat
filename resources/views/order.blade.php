@@ -23,7 +23,20 @@
                         
                     </div>
     @if($isaddorder=='yes')
+
 <div style="position: fixed;left: 0;width: 100%;bottom: 80px;z-index: 90;background: #FFFFFF">
+    <p class="weui-cells__title">收件人:</p>
+    <div class="weui-cell__bd">
+        <p style="font-size: 12px;text-indent: 2em">{{$add->name}}</p>
+    </div>
+    <p class="weui-cells__title">联系电话:</p>
+    <div class="weui-cell__bd">
+        <p style="font-size: 12px;text-indent: 2em">{{$add->phone}}</p>
+    </div>
+    <p class="weui-cells__title">详细地址:</p>
+    <div class="weui-cell__bd">
+        <p style="font-size: 12px;text-indent: 2em">{{$add->address}}</p>
+    </div>
 <p class="weui-cells__title">支付方式</p>
     <div class="weui-cells weui-cells_radio">
         <label class="weui-cell weui-check__label" for="x11">
@@ -47,14 +60,24 @@
         </label>
     </div>
 </div>
-@endif
-
+@else
+    <p>
+        <label class="weui-form-preview__label">收货地址</label>
+        <select class="weui-select" name="select2" style="border: rgba(25,25,25,0.3) solid 1px" onchange="addnew()" id="addnew">
+            @foreach($add as $k=>$v)
+                <option value="{{$v->id}}">{{$v->address}}</option>
+            @endforeach
+            <option value="addnew">添加新地址</option>
+        </select>
+    </p>
+    @endif
 
                <div style="width: 100%;height: 80px;position: fixed;left: 0;bottom: 0;background: #FFFFFF;z-index: 90">
         <p id="prcss" style="color: red;font-size: 14px;height: 10px;text-align: right;padding-right: 30px">总计:￥{{$total}}</p>
         <div class="weui-btn-area" style="display: flex">
+
             @if($isaddorder=='yes')
-                <a class="weui-btn weui-btn_primary" id="showTooltips" style="width: 48%;flex-grow: 1;margin: 0;padding: 0;background: #FFFFFF;border: none;border-radius: 0;color: black;" onclick="history.go(-2)">取消</a>
+                <a class="weui-btn weui-btn_primary" id="showTooltips" style="width: 48%;flex-grow: 1;margin: 0;padding: 0;background: #FFFFFF;border: none;border-radius: 0;color: black;" onclick="history.go(-3)">取消</a>
             <a class="weui-btn weui-btn_primary" id="prcs" style="width: 48%;flex-grow: 1;margin: 0;padding: 0;margin-left: 5%" onclick="topay()">支付</a>
             @else
                 <script>
@@ -63,12 +86,25 @@
                     item_arr.push({{$vals}});
                     @endforeach
                     </script>
-                <a class="weui-btn weui-btn_primary" id="showTooltips" style="width: 48%;flex-grow: 1;margin: 0;padding: 0;background: #FFFFFF;border: none;border-radius: 0;color: black;" onclick="history.go(-1)">取消</a>
-                <a class="weui-btn weui-btn_primary" id="prcs" style="width: 48%;flex-grow: 1;margin: 0;padding: 0;margin-left: 5%" onclick="location.href='/cart/order/'+item_arr+'?addorder=yes'">提交订单</a>
+                <a class="weui-btn weui-btn_primary" id="showTooltips" style="width: 48%;flex-grow: 1;margin: 0;padding: 0;background: #FFFFFF;border: none;border-radius: 0;color: black;" onclick="history.go(-2)">取消</a>
+                <a class="weui-btn weui-btn_primary" id="prcs" style="width: 48%;flex-grow: 1;margin: 0;padding: 0;margin-left: 5%" onclick="toorder()">提交订单</a>
                 @endif
         </div>
     </div>
                 @endif
 @endsection
 @section('my-js')
+    <script>
+        function addnew() {
+            let sys=document.getElementById('addnew').value;
+            if (sys=='addnew'){
+                window.location.href='/cart/addressAdd';
+            }
+
+        }
+        function toorder() {
+            let addrs=document.getElementById('addnew').value;
+            location.href='/cart/order/'+item_arr+'?addorder=yes&address='+addrs;
+        }
+    </script>
 @endsection
