@@ -167,7 +167,6 @@
                         layer.msg('已删除!',{icon:1,time:1000});
                     },
                     error:function(data) {
-                        console.log(data.msg);
                     },
                 });
             });
@@ -188,7 +187,6 @@
                 item_arr=[];
                 item_arr.push(id);
             }
-            console.log(item_arr);
             $.ajax({
                 url:'/admin/delpro',
                 type:'GET',
@@ -198,7 +196,6 @@
                     location.reload();
                 },
                 error:function (data,status,txt) {
-                    console.log(data);
                     layer.msg('删除失败!',{icon:2,time:2000});
                 }
             })

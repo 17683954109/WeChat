@@ -94,7 +94,6 @@
                     let price=price_arr[$(this).attr('id')];
                     let nums=num[$(this).attr('id')];
                     let totalprice=price*nums;
-                    console.log('start checked');
                 }
             });
             if (item_arr.length==0) {
@@ -105,11 +104,9 @@
                 url:'/cart/getprice/'+item_arr,
                 type:'GET',
                 success:function(data){
-                    console.log(data);
                     document.getElementById('prcss').innerHTML='总计:￥'+data.toFixed(1);
                 },
                 error:function(data,status,tst){
-                    console.log(data)
                 }
             })
             
@@ -141,7 +138,6 @@
 
         //  更改数量数据库异步同步方法
         function changenum(id,num='') {
-            console.log(num)
             if (num==''){
 
             }else{
@@ -149,7 +145,6 @@
                     url:'/cart/change/'+id+'/'+num,
                     type:'GET',
                     success:function (data) {
-                        console.log(data);
                     },
                     error:function (data,status,txt) {
                         document.getElementById('resoult').innerHTML='更改失败!';
@@ -158,7 +153,6 @@
                             document.getElementById('toasts').style.display='none';
                             document.getElementById('resoult').innerHTML='已发送!';
                         },1000)
-                        console.log(data);
 
                     }
                 })
@@ -211,7 +205,6 @@
                     item_arr.push($(this).attr('id'));
                 }
             });
-            console.log(item_arr)
             if (item_arr.length==0){
                 document.getElementById('resoult').innerHTML='请选择结算项!';
                 document.getElementById('toasts').style.display='block';
@@ -244,7 +237,6 @@
                 }
                 let idnum=idss[(idss.length)-1];
                 if (id=='ss'+idnum){
-                    console.log('sss')
                     window.scrollTo(winWidth,winHeight);
                 }
             }else{
@@ -278,7 +270,6 @@
                     let price=price_arr[$(this).attr('id')];
                     let nums=num[$(this).attr('id')];
                     let totalprice=price*nums;
-                    console.log('start checked');
                 }
             });
             if (id!=''){
@@ -301,7 +292,6 @@
                 datatype:'json',
                 data:{products:item_arr+''},
                 success:function (data) {
-                    console.log(data);
                     document.getElementById('resoult').innerHTML='删除成功!';
                     document.getElementById('toasts').style.display='block';
                     // alert('添加成功!');
@@ -312,7 +302,6 @@
                     location.reload('/cart/vis');
                 },
                 error:function (data,status,txt) {
-                    console.log(data);
                     document.getElementById('resoult').innerHTML='删除失败!';
                     document.getElementById('toasts').style.display='block';
                     // alert('添加成功!');

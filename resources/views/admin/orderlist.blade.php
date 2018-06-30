@@ -65,7 +65,6 @@
                     _token:"{{csrf_token()}}"
                 },
                 success:function (data) {
-                    console.log(data);
                     if (data=='ok'){
                         layer.msg('删除成功!',{icon:1,time:2000});
                         setTimeout(function () {
@@ -74,7 +73,6 @@
                     }
                 },
                 error:function (data,status,sts) {
-                    console.log(data);
                     layer.msg('删除失败!',{icon:2,time:2000});
                 }
             })

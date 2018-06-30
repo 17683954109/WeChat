@@ -90,7 +90,6 @@
                     }
                 },
                 error: function (data, status, sts) {
-                    console.log(data);
                 }
 
             })
@@ -111,7 +110,6 @@
                     _token: "{{csrf_token()}}"
                 },
                 success: function (data) {
-                    console.log(data);
                     if (data == 'ok') {
                         document.getElementById('res').value = '修改成功!';
                     }
@@ -120,7 +118,6 @@
                     }, 2000)
                 },
                 error: function (data, status, txt) {
-                    console.log(data);
                 }
             })
         }
@@ -158,7 +155,6 @@
                 datatype: 'json',
                 data: {products: ids + ''},
                 success: function (data) {
-                    console.log(data);
                     document.getElementById('toasts').innerHTML = '删除成功!';
                     document.getElementById('toasts').style.display = 'block';
                     // alert('添加成功!');
@@ -172,7 +168,6 @@
                     })
                 },
                 error: function (data, status, txt) {
-                    console.log(data);
                     document.getElementById('toasts').innerHTML = '删除失败!';
                     document.getElementById('toasts').style.display = 'block';
                     // alert('添加成功!');

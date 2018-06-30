@@ -47,7 +47,6 @@
                     _token:"{{csrf_token()}}"
                 },
                 success:function (data) {
-                    console.log(data);
                     if (data=='ok'){
                         document.getElementById('res').value='修改成功!';
                     }
@@ -56,7 +55,6 @@
                     },2000)
                 },
                 error:function (data,status,txt) {
-                    console.log(data);
                 }
             })
         }

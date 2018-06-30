@@ -70,7 +70,7 @@
             <div class="Hui-tabNav-wp">
                 <ul id="min_title_list" class="acrossTab cl">
                     <li class="active">
-                        <span title="我的桌面" data-href="welcome.html">服务器信息</span>
+                        <span title="我的桌面" data-href="/admin/welcome">服务器信息</span>
                         <em></em></li>
                 </ul>
             </div>

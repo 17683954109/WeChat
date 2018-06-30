@@ -44,7 +44,6 @@
             datatype:'json',
             data:{products:ids+''},
             success:function (data) {
-                console.log(data);
                 document.getElementById('toasts').innerHTML='删除成功!';
                 document.getElementById('toasts').style.display='block';
                 // alert('添加成功!');
@@ -55,7 +54,6 @@
                 location.reload();
             },
             error:function (data,status,txt) {
-                console.log(data);
                 document.getElementById('toasts').innerHTML='删除失败!';
                 document.getElementById('toasts').style.display='block';
                 // alert('添加成功!');

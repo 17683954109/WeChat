@@ -271,14 +271,6 @@
             <div style="display:none">Page 3</div>
         </div>
     </div>
-    {{--<div id="loadingToast" style="display:none;">--}}
-        {{--<div class="weui-mask_transparent"></div>--}}
-        {{--<div class="weui-toast">--}}
-            {{--<i class="weui-loading weui-icon_toast"></i>--}}
-            {{--<p class="weui-toast__content" id="toast">请等待60秒</p>--}}
-        {{--</div>--}}
-    {{--</div>--}}
-
 @endsection
 @section('my-js')
     <script type="text/javascript">
@@ -364,7 +356,6 @@
                                 tips.innerHTML='已发送!';
                             },1000);
                         }
-                        console.log(data);
                     },
                     error:function (data,status,error) {
                         tip.style.display='block';
@@ -373,7 +364,6 @@
                             tip.style.display='none';
                             tips.innerHTML='已发送!';
                         },1000);
-                        console.log(data);
                     }
                 })
             }else{
@@ -433,7 +423,6 @@
                                 window.location.href='/goods';
                             },1000);
                         }
-                        console.log(data);
                     },
                     error:function (data,status,error) {
                         tip.style.display='block';
@@ -442,7 +431,6 @@
                             tip.style.display='none';
                             tips.innerHTML='已发送!';
                         },1000);
-                        console.log(data);
                     }
                 })
             }

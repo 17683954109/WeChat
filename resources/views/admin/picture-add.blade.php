@@ -67,7 +67,6 @@
         getpro();
     }
     function getpro() {
-        console.log('ok');
         document.getElementById('classs').innerHTML='';
         let mainss=document.getElementById('classss').value;
         for (var i=0;i<idsss.length;i++){
@@ -104,12 +103,10 @@
                                         processData: false,
                                         contentType: false,
                                         success: function (msg) {
-                                            console.log(msg);
                                             id=msg;
                                             getimgs(msg);
                                         },
                                         error:function (data,status,sts) {
-                                            console.log(data);
                                         }
                                     });
                                 }
@@ -150,8 +147,6 @@
         document.getElementById('mFile').onchange = function (ev) {
             //判断 FileReader 是否被浏览器所支持
             if (!window.FileReader) return;
-
-            console.log(ev);
 
             var file = ev.target.files[0];
             fills=file;
