@@ -19,9 +19,6 @@
                     </div>
 
                     <div class="swiper-pagination"></div>
-                    <div class="swiper-button-prev" style="width: 25px;height: 20px"></div>
-                    <div class="swiper-button-next" style="width: 25px;height: 20px"></div>
-                    {{--<div class="swiper-scrollbar"></div>--}}
                 </div>
             </div>
 
