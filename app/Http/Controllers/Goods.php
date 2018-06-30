@@ -12,6 +12,18 @@ use App\Entity\cart;
 
 class Goods extends Controller
 {
+//    首页商品列表方法
+    public function index(){
+        $res=product::all();
+        $preimg=product::orderBy('id','desc')->limit(4)->get();
+        $img=array();
+        $ids=array();
+        foreach ($preimg as $k=>$v){
+            $img[]=$v->prview_img;
+            $ids[]=$v->id;
+        }
+        return view('prolist',['res'=>$res,'preimg'=>$img,'id'=>$ids]);
+    }
     //一级商品分类ajax访问方法
     public function clas(){
         $main=Main::select('*')->get();
@@ -22,18 +34,6 @@ class Goods extends Controller
     // 二级分类ajax访问方法
     public function det(){
         $id=$_GET['id'];
-//        $resid=Main::select('class_det')->where('class_id',$id)->get();
-//        $resid=$resid[0]['class_det'];
-//        $res=array();
-//        if (strstr($resid,',')){
-//            $resid=explode(',',$resid);
-//            for ($i=0;$i<(count($resid));$i++){
-//                $idss=intval($resid[$i]);
-//                $res[$i]=clas::where('class_id',$idss)->get();
-//            }
-//        }else{
-//        $res[]=clas::where('class_id',$resid)->get();
-//        }
         $res=clas::where('main_class',$id)->get();
         return $res;
     }

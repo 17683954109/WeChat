@@ -23,8 +23,8 @@
 
         {{--右上角全局菜单导航--}}
         <div style="background: #FFFFFF;height:20%;overflow: hidden;position: fixed;left: 0;bottom: 0;width: 100%;z-index: 99999" id="slese">
-        <div class="weui-navbar__item" id="page0" onclick="location.href='/register'" style="background: rgba(255,255,255,1);text-align: left;text-indent: 3em">
-            注册
+        <div class="weui-navbar__item" id="page0" onclick="location.href='/'" style="background: rgba(255,255,255,1);text-align: left;text-indent: 3em">
+            首页
         </div>
         <div class="weui-navbar__item" id="page1" onclick="location.href='/login'" style="background: rgba(255,255,255,1);text-align: left;text-indent: 3em">
             登录

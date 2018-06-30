@@ -13,10 +13,7 @@
 use App\Entity\admin;
 
 //      网站首页路由
-Route::get('/', function (\Illuminate\Http\Request $request) {
-    $return_url=$request->input('return_url','');
-    return view('login')->with('return_url',urldecode($return_url));
-});
+Route::get('/', 'Goods@index');
 //      网站注册路由
 Route::get('/register',function (){
     return view('register');
