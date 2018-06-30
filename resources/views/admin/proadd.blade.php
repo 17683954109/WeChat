@@ -89,12 +89,10 @@
                                 processData: false,
                                 contentType: false,
                                 success: function (msg) {
-                                    console.log(msg);
                                     id=msg;
                                     getimgs(msg);
                                 },
                                 error:function (data,status,sts) {
-                                    console.log(data);
                                 }
                             });
                         }
@@ -116,7 +114,6 @@
                                         "                    </li>";
                                 },
                                 error:function (data,status,sts) {
-                                    console.log(data);
                                 }
                             })
                         }
@@ -152,8 +149,6 @@
         document.getElementById('mFile').onchange = function (ev) {
             //判断 FileReader 是否被浏览器所支持
             if (!window.FileReader) return;
-
-            console.log(ev);
 
             var file = ev.target.files[0];
             fills=file;
@@ -205,7 +200,6 @@
                     _token:"{{csrf_token()}}"
                 },
                 success:function (data) {
-                    console.log(data);
                     if (data=='ok'){
                         document.getElementById('resss').value='添加成功!';
                         setTimeout(function () {
@@ -215,7 +209,6 @@
 
                 },
                 error:function (data,status,tst) {
-                    console.log(data);
                     document.getElementById('resss').value='添加失败!';
                     setTimeout(function () {
                         document.getElementById('resss').value='重试';

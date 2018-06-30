@@ -110,7 +110,6 @@
                     })
                 },
                 error:function (data,status,sts) {
-                    console.log(data);
                 }
             })
         }
@@ -138,7 +137,6 @@
                 item_arrss=[];
                 item_arrss.push(id);
             }
-            console.log(item_arrss);
             let stat='clas';
             if (catemode==false){
                 stat='main';
@@ -148,12 +146,10 @@
                 type:'GET',
                 data:{products:item_arrss+''},
                 success:function (data) {
-                    console.log(data);
                     layer.msg('删除成功!',{icon:1,time:2000});
                     changemode();
                 },
                 error:function (data,status,txt) {
-                    console.log(data);
                     layer.msg('删除失败!',{icon:2,time:2000});
                 }
             })

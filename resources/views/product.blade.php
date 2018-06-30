@@ -140,8 +140,6 @@
                 url:'/cart/add/{{$res->id}}/'+numsss,
                 type:'GET',
                 success:function (data) {
-
-                    console.log(data);
                     if (data=='ok'){
                         document.getElementById('resoult').innerHTML='添加成功!';
                         document.getElementById('toasts').style.display='block';
@@ -160,7 +158,6 @@
                         document.getElementById('toasts').style.display='none';
                         document.getElementById('resoult').innerHTML='已发送!';
                     },1000)
-                    console.log(data);
 
                 }
             })

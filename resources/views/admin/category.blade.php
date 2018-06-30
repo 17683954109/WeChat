@@ -71,7 +71,6 @@
                         _token:"{{csrf_token()}}"
                     },
                     success:function (data) {
-                        console.log(data);
                         if (data=='ok'){
                             document.getElementById('ress').value='添加成功!';
                             setTimeout(function () {
@@ -80,7 +79,6 @@
                         }
                     },
                     error:function (data,status,sts) {
-                        console.log(data);
                         document.getElementById('ress').value='添加失败!';
                         setTimeout(function () {
                             document.getElementById('ress').value='重试';

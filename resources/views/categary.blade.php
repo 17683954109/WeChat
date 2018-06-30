@@ -48,24 +48,21 @@ function getclass(){
             backinfo='back';
         },
         error:function(data,status,tet){
-            console.log(data);
         }
     })
 }
 //  获取二级分类列表
 function backs() {
     if (sss!=''){
-        console.log('使用缓存');
         document.getElementById('celll').innerHTML=sss;
         sss='';
     }else{
         if (backinfo=='back'){
             // sys.setItem('os','');
             window.history.go(-1);
-            console.log('全局返回');
             return;
         }
-        console.log('重新请求');
+
         getclass();
     }
 }
@@ -73,7 +70,6 @@ function to(id) {
     if (sys){
         let olds=sys.getItem('os');
         if (olds!=null&&olds!=''){
-            console.log('使用本地缓存');
             document.getElementById('total').innerHTML=olds;
             document.getElementById('back-global').innerHTML="<img class=\"bk_bar\" src=\"/images/back.png\" onclick=\"backs()\">\n" +
                 "    <p class=\"titles\">分类</p>\n" +
@@ -101,10 +97,8 @@ function to(id) {
                 document.getElementById('celll').innerHTML+='<div class="weui-cell" onclick="pro('+e.class_id+')"><div class="weui-cell__bd"><p>'+e.class_name+'</p></div><div class="weui-cell__ft">'+e.preview+'</div> </div>';
             });
             backinfo='';
-            console.log(data);
         },
         error:function (data,status,tet) {
-           console.log(data);
         }
     })
 }
@@ -124,7 +118,6 @@ function pro(id) {
             // document.getElementById('cellsss').innerHTML=data[0].info+'分类';
             // document.getElementById('celltitle').innerHTML=data[0].info;
             data.forEach(function(e){
-                console.log(data);
                 document.getElementById('celll').innerHTML+='<div class="weui-cells">\n' +
                     '\n' +
                     '        <a class="weui-cell weui-cell_access" onclick="go('+e.id+')">\n' +
@@ -140,7 +133,6 @@ function pro(id) {
 
         },
         error:function (data,status,tet) {
-            console.log(data);
         }
     })
 }

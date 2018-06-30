@@ -137,11 +137,9 @@
                         },1500);
 
                     }
-                    console.log(data);
                 },
                 error:function (data,status,error) {
-                    
-                    console.log(data);
+
                 }
             })
         }

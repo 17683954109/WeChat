@@ -84,11 +84,9 @@
                             document.getElementById('resoult').innerHTML='已发送!';
                         },1000);
                     }
-                    console.log(data);
 
                 },
                 error:function (data,status,tst) {
-                    console.log(data);
                     document.getElementById('resoult').innerHTML='更改失败!';
                     document.getElementById('toasts').style.display='block';
                     setTimeout(function () {

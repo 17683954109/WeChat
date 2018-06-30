@@ -65,7 +65,6 @@
                 url:'/admin/orderchange',
                 type:'GET',
                 success:function (data) {
-                    console.log(data);
                     if (data=='ok'){
                         document.getElementById('res').value='发货成功';
                         setTimeout(function () {
@@ -80,7 +79,6 @@
 
                 },
                 error:function (data,status,sts) {
-                    console.log(data);
                     document.getElementById('res').value='发货失败';
                     setTimeout(function () {
                         document.getElementById('res').value='重试';

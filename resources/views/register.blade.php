@@ -4,21 +4,6 @@
 <link rel="icon" href="/images/reg.ico">
 @endsection
 @section('content')
-{{--<p style="font-size: 16px;text-align: center;height: 50px;line-height: 50px">用户注册</p>--}}
-<!-- navibar导航 -->
-{{--<div class="weui-tab">--}}
-    {{--<div class="weui-navbar">--}}
-        {{--<div class="weui-navbar__item weui-bar__item_on" id="page1" onclick="shows('page1')">--}}
-            {{--登录/注册--}}
-        {{--</div>--}}
-        {{--<div class="weui-navbar__item" id="page2" onclick="shows('page2')">--}}
-            {{--苹果产品--}}
-        {{--</div>--}}
-        {{--<div class="weui-navbar__item" id="page3" onclick="shows('page3')">--}}
-            {{--购物车--}}
-        {{--</div>--}}
-    {{--</div>--}}
-{{--</div>--}}
     <div class="weui-tab__panel">
         <div id="pa1"><!-- weui表单 -->
 <div class="weui-cells__title">注册方式</div>
@@ -375,7 +360,6 @@
                 setTimeout(function () {
                     document.getElementById('toasts').style.display='none';
                 },1000);
-                console.log(data);
                 smscodeinfo='yes';
                 getcode();
             },
@@ -385,7 +369,6 @@
                 setTimeout(function () {
                     document.getElementById('loadingToast').style.display='none';
                 },1000);
-                console.log(data);
             },
         });
     }
@@ -454,7 +437,6 @@
                         document.getElementById('toasts').style.display='none';
                         location.href='/login';
                     },1000);
-                    console.log(data);
                 },
                 error: function (data, textStatus, errorThrown) {
                     document.getElementById('loadingToast').innerHTML='注册失败！';
@@ -462,7 +444,6 @@
                     setTimeout(function () {
                         document.getElementById('loadingToast').style.display='none';
                     },1000);
-                    console.log(data);
 
                 },
             });
@@ -492,7 +473,6 @@
                     setTimeout(function () {
                         document.getElementById('toasts').style.display='none';
                     },1000);
-                    console.log(data);
                 },
                 error: function (data, textStatus, errorThrown) {
                     document.getElementById('loadingToast').innerHTML='注册失败！';
@@ -500,7 +480,6 @@
                     setTimeout(function () {
                         document.getElementById('loadingToast').style.display='none';
                     },1000);
-                    console.log(data);
 
                 },
             });

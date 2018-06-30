@@ -175,7 +175,6 @@
                         },1000)
                     },
                     error:function (data,status,sts) {
-                        console.log(data);
                     }
                 })
             }

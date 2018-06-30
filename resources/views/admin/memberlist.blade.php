@@ -93,7 +93,6 @@
                         layer.msg('已停用!',{icon: 5,time:1000});
                     },
                     error:function(data) {
-                        console.log(data.msg);
                     },
                 });
             });
@@ -113,7 +112,6 @@
                         layer.msg('已启用!',{icon: 6,time:1000});
                     },
                     error:function(data) {
-                        console.log(data.msg);
                     },
                 });
             });
@@ -138,7 +136,6 @@
                         layer.msg('已删除!',{icon:1,time:1000});
                     },
                     error:function(data) {
-                        console.log(data.msg);
                     },
                 });
             });
