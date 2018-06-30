@@ -9,7 +9,7 @@
 
 
         <div class="swiper-container">
-            <div class="swiper-wrapper">
+            <div class="swiper-wrapper" style="text-align: center">
                 @foreach($preimg as $ke=>$img)
                     <div class="swiper-slide" style="width: 200px;height: 200px;" onclick="window.location.href='/product/{{$id[$ke]}}'"><img src="{{$img}}" style="height: 200px;" id="slide"></div>
                 @endforeach
@@ -22,7 +22,7 @@
     <div class="weui-cells">
         @foreach($res as $k=>$v)
             <div class="weui-cells">
-              <a class="weui-cell weui-cell_access" onclick="window.location.href='/product/{{$v->id}}'">
+              <a class="weui-cell weui-cell_access" href='/product/{{$v->id}}'>
                       <div class="weui-cell__hd"><img src="{{$v->prview_img}}" alt="" style="width:60px;margin-right:5px;display:block"></div>
                          <div class="weui-cell__bd">
                                   <p id="celltitle" style="text-indent: 2em">{{$v->info}}</p>
